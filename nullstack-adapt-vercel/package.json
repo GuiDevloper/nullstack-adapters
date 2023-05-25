@@ -1,0 +1,22 @@
+{
+  "name": "nullstack-adapt-vercel",
+  "version": "0.0.1",
+  "description": "Generate build files compatible with Vercel using Build Output API",
+  "author": "GuiDevloper",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GuiDevloper/nullstack-adapters/tree/main/nullstack-adapt-vercel"
+  },
+  "main": "./index.js",
+  "bin": {
+    "nulla": "./index.js"
+  },
+  "keywords": [
+    "nullstack",
+    "vercel"
+  ],
+  "devDependencies": {
+    "@types/node": "^20.2.3"
+  }
+}
