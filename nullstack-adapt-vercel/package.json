@@ -1,6 +1,6 @@
 {
   "name": "nullstack-adapt-vercel",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Generate build files compatible with Vercel using Build Output API",
   "author": "GuiDevloper",
   "license": "MIT",
