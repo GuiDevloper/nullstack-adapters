@@ -1,0 +1,28 @@
+{
+  "name": "nullstack-adapt-babel",
+  "version": "0.0.3",
+  "description": "Adapt Nullstack to Babel",
+  "author": "GuiDevloper",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GuiDevloper/nullstack-adapters/tree/main/nullstack-adapt-babel"
+  },
+  "main": "./index.js",
+  "keywords": [
+    "nullstack",
+    "babel"
+  ],
+  "dependencies": {
+    "@babel/core": "^7.18.13",
+    "@babel/parser": "7.20.15",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-export-default-from": "^7.18.10",
+    "@babel/plugin-transform-react-jsx": "^7.18.10",
+    "@babel/plugin-transform-typescript": "^7.18.12",
+    "@babel/preset-env": "^7.18.10",
+    "@babel/preset-react": "^7.18.6",
+    "@babel/traverse": "7.20.13",
+    "babel-loader": "9.1.2"
+  }
+}
