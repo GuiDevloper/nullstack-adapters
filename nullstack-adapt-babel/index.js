@@ -248,6 +248,7 @@ module.exports = function useBabel(configs) {
       const options = getOptions(targets[configId], argv)
       return {
         ...oldConfig,
+        optimization: require('./utils/optimization')(options),
         module: {
           rules: [
             ...oldRules.slice(0, 3),
