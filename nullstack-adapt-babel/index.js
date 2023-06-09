@@ -2,7 +2,6 @@
 const path = require('path')
 const { readdirSync } = require('fs')
 const getOptions = require('./utils/getOptions')
-const fixDeps = require('./utils/fix-deps')
 
 function runtime(options) {
   return {
@@ -233,8 +232,6 @@ function newConfig(options) {
     }
   ]
 }
-
-fixDeps()
 
 /**
  *
