@@ -1,6 +1,6 @@
 {
   "name": "nullstack-adapt-babel",
-  "version": "0.0.7",
+  "version": "0.0.11",
   "description": "Adapt Nullstack to Babel",
   "author": "GuiDevloper",
   "license": "MIT",
@@ -9,6 +9,9 @@
     "url": "https://github.com/GuiDevloper/nullstack-adapters/tree/main/nullstack-adapt-babel"
   },
   "main": "./index.js",
+  "bin": {
+    "nullstack-adapt-babel": "./index.js"
+  },
   "keywords": [
     "nullstack",
     "babel"

@@ -1,7 +1,14 @@
+#! /usr/bin/env node
 // @ts-check
 const path = require('path')
 const { readdirSync } = require('fs')
-const getOptions = require('./utils/getOptions')
+const { getOptions, disabledAdapter } = require('./utils')
+const shutSWC = require('./utils/shut-swc')
+const runAsCLI = require('./utils/runAsCLI')
+
+if (require.main === module) {
+  runAsCLI(__dirname)
+}
 
 function runtime(options) {
   return {
@@ -238,6 +245,9 @@ function newConfig(options) {
  * @param {Array<(...[]) => {module: {rules: Array<{}>}}>} configs
  */
 module.exports = function useBabel(configs) {
+  shutSWC()
+  if (disabledAdapter()) return configs
+
   const targets = ['server', 'client']
   return configs.map((config, configId) => {
     return (_env, argv) => {
