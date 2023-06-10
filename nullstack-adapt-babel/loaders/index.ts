@@ -1,8 +1,8 @@
-// @ts-check
-const path = require('path')
-const { readdirSync } = require('fs')
+import path from 'path'
+import { readdirSync } from 'fs'
+import { type Options } from '../utils/getOptions'
 
-function runtime(options) {
+function runtime(options: Options) {
   return {
     // TODO: think about module components and create better rule
     exclude: /node_modules/,
@@ -11,11 +11,11 @@ function runtime(options) {
   }
 }
 
-function getLoader(loader) {
+function getLoader(loader: string) {
   return path.join(__dirname, loader)
 }
 
-function oldLoader(options) {
+function oldLoader(options: Options) {
   if (options.target === 'server') {
     return [
       {
@@ -37,13 +37,13 @@ function oldLoader(options) {
   ]
 }
 
-function environment(_options) {
+function environment(_options: Options) {
   const crypto = require('crypto')
   const key = crypto.randomBytes(20).toString('hex')
   return { KEY: `"${key}"` }
 }
 
-function replaceEnvironment(options) {
+function replaceEnvironment(options: Options) {
   return {
     test: /environment.js$/,
     loader: getLoader('string-replace.js'),
@@ -58,22 +58,24 @@ function replaceEnvironment(options) {
   }
 }
 
-function icons(options) {
-  const icons = {}
+type Icons = { [K: string]: string }
+
+function icons(options: Options) {
+  const icons: Icons = {}
   const publicFiles = readdirSync(
     path.posix.join(options.projectFolder, 'public')
   )
   const iconFileRegex = /icon-(\d+)x\1\.[a-zA-Z]+/
   for (const file of publicFiles) {
     if (iconFileRegex.test(file)) {
-      const size = file.split('x')[1].split('.')[0]
+      const size: string = file.split('x')[1].split('.')[0]
       icons[size] = `/${file}`
     }
   }
   return { ICONS: JSON.stringify(icons) }
 }
 
-function replaceProject(options) {
+function replaceProject(options: Options) {
   return {
     test: /project.js$/,
     loader: getLoader('string-replace.js'),
@@ -88,7 +90,9 @@ function replaceProject(options) {
   }
 }
 
-function resolveBabelPresets(presets) {
+function resolveBabelPresets(
+  presets: BabelLoaderOptions['options']['presets']
+) {
   return presets.map(preset =>
     Array.isArray(preset)
       ? [require.resolve(preset[0]), preset[1]]
@@ -96,7 +100,15 @@ function resolveBabelPresets(presets) {
   )
 }
 
-function babel(_options, other) {
+type BabelLoaderOptions = {
+  test: RegExp
+  options: {
+    presets: Array<string | [string, object]>
+    plugins: Array<string | [string, object]>
+  }
+}
+
+function babel(_options: Options, other: BabelLoaderOptions) {
   return {
     test: other.test,
     resolve: {
@@ -114,7 +126,7 @@ function babel(_options, other) {
   }
 }
 
-function js(options) {
+function js(options: Options) {
   return babel(options, {
     test: /\.js$/,
     options: {
@@ -127,7 +139,7 @@ function js(options) {
   })
 }
 
-function ts(options) {
+function ts(options: Options) {
   return babel(options, {
     test: /\.ts$/,
     options: {
@@ -140,7 +152,7 @@ function ts(options) {
   })
 }
 
-function njs(options) {
+function njs(options: Options) {
   return babel(options, {
     test: /\.(njs|jsx)$/,
     options: {
@@ -164,7 +176,7 @@ function njs(options) {
   })
 }
 
-function nts(options) {
+function nts(options: Options) {
   return babel(options, {
     test: /\.(nts|tsx)$/,
     options: {
@@ -195,9 +207,9 @@ function nts(options) {
   })
 }
 
-function injectHmr(options) {
+function injectHmr(options: Options) {
   if (options.target !== 'client' || options.environment !== 'development') {
-    return
+    return {}
   }
 
   return {
@@ -206,7 +218,7 @@ function injectHmr(options) {
   }
 }
 
-function newConfig(options) {
+function newConfig(options: Options): Array<{}> {
   return [
     runtime(options),
     js(options),
@@ -229,7 +241,7 @@ function newConfig(options) {
       test: /\.(njs|nts|jsx|tsx)$/,
       loader: getLoader('transform-node-ref.js')
     }
-  ]
+  ].filter(rule => !!rule.test)
 }
 
-module.exports = { newConfig }
+export { newConfig }
