@@ -1,0 +1,28 @@
+const esbuild = require('esbuild')
+const glob = require('tiny-glob')
+
+async function start() {
+  const files = await glob('src/**/*.{js,ts}', {
+    filesOnly: true
+  })
+  /** @type esbuild.BuildOptions */
+  const esbuild_options = {
+    entryPoints: files,
+    platform: 'node',
+    target: ['node14'],
+    outdir: 'dist',
+    format: 'cjs',
+    treeShaking: true,
+    minify: true,
+    allowOverwrite: true
+  }
+  const isBuild = process.argv[2] === 'prod'
+  if (isBuild) {
+    return esbuild.buildSync(esbuild_options)
+  }
+
+  const ctx = esbuild.context(esbuild_options)
+  ;(await ctx).watch()
+  console.log('esbuild is watching...')
+}
+start()

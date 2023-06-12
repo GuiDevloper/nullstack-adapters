@@ -5,8 +5,6 @@ import runAsCLI from './utils/runAsCLI'
 import { newConfig } from './loaders'
 import { type Options } from './utils/getOptions'
 
-const req = require
-console.log(req, req.main)
 if (require.main === module) {
   console.log('CLIII')
   runAsCLI(__dirname)
@@ -19,7 +17,7 @@ type Config = {
 
 type ConfigFunction = (env: object, argv: object) => Config
 
-export default function useBabel(configs: ConfigFunction[]): ConfigFunction[] {
+function useBabel(configs: ConfigFunction[]): ConfigFunction[] {
   shutSWC()
   if (disabledAdapter()) return configs
 
@@ -45,3 +43,5 @@ export default function useBabel(configs: ConfigFunction[]): ConfigFunction[] {
     }
   })
 }
+
+export = useBabel
