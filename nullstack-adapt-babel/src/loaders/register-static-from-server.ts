@@ -1,27 +1,22 @@
-// @ts-check
-const parse = require('@babel/parser').parse
-const traverse = require('@babel/traverse').default
-const crypto = require('crypto')
-const path = require('path')
+import { parse } from '@babel/parser'
+import traverse from '@babel/traverse'
+import path from 'path'
+import { newHash, type LoaderModule } from './loaders-utils'
 
-function newHash(name) {
-  return crypto.createHash('md5').update(name).digest('hex')
-}
-
-module.exports = function (source) {
+export = function (this: LoaderModule, source: string): string {
   let hasClass = false
   const id = this.resourcePath.replace(this.rootContext, '')
-  let klassName
-  const methodNames = []
-  let hashes = {}
-  let imports = []
+  let klassName: string
+  const methodNames: string[] = []
+  let hashes: Record<string, string> = {}
+  let imports: string[] = []
   const ast = parse(source, {
     sourceType: 'module',
     plugins: ['classProperties', 'jsx', 'typescript']
   })
   traverse(ast, {
     ImportDeclaration(path) {
-      imports.push(path.node.source.extra.rawValue)
+      imports.push(path.node.source.extra.rawValue.toString())
     },
     ClassDeclaration(path) {
       hasClass = true
@@ -31,10 +26,10 @@ module.exports = function (source) {
       if (
         path.node.static &&
         path.node.async &&
-        !path.node.key.name.startsWith('_')
+        !path.node.key['name'].startsWith('_')
       ) {
-        methodNames.push(path.node.key.name)
-        hashes[path.node.key.name] = newHash(path.node.key.name)
+        methodNames.push(path.node.key['name'])
+        hashes[path.node.key['name']] = newHash(path.node.key['name'])
       }
     }
   })

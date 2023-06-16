@@ -1,9 +1,9 @@
-const parse = require('@babel/parser').parse
-const traverse = require('@babel/traverse').default
+import { parse } from '@babel/parser'
+import traverse from '@babel/traverse'
 
-module.exports = function (source) {
-  const injections = {}
-  const positions = []
+export = function (source: string): string {
+  const injections: Record<number, string[]> = []
+  const positions: number[] = []
   const ast = parse(source, {
     sourceType: 'module',
     plugins: ['classProperties', 'jsx', 'typescript']
@@ -26,7 +26,7 @@ module.exports = function (source) {
           }
         }
       }
-      if (path.node.key.name.startsWith('render')) {
+      if (path.node.key['name'].startsWith('render')) {
         traverse(
           path.node,
           {
@@ -41,8 +41,8 @@ module.exports = function (source) {
   })
   positions.reverse()
   positions.push(0)
-  const outputs = []
-  let last
+  const outputs: string[] = []
+  let last: number
   for (const position of positions) {
     const code = source.slice(position, last)
     last = position

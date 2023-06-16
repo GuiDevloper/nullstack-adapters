@@ -1,8 +1,20 @@
-// @ts-check
-const path = require('path')
-const { existsSync } = require('fs')
+import path from 'path'
+import { existsSync } from 'fs'
 
-function getOptions(target, options) {
+export type Options = {
+  target: 'client' | 'server'
+  disk: boolean
+  buildFolder: string
+  entry: string
+  environment: 'production' | 'development'
+  cache: boolean
+  name: string
+  trace: boolean
+  projectFolder: string
+  configFolder: string
+}
+
+function getOptions(target: Options['target'], options: any): Options {
   const disk = !!options.disk
   const environment = options.environment
   const entry = existsSync(path.posix.join(process.cwd(), `${target}.ts`))
@@ -28,7 +40,7 @@ function getOptions(target, options) {
   }
 }
 
-module.exports = (...args) => {
+export default function (...args: [Options['target'], any]) {
   const options = getOptions(...args)
   options.configFolder = path.dirname('nullstack/webpack.config.js')
   return options

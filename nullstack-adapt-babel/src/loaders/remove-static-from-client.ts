@@ -1,30 +1,24 @@
-// @ts-check
-const parse = require('@babel/parser').parse
-const traverse = require('@babel/traverse').default
-const crypto = require('crypto')
+import { parse } from '@babel/parser'
+import traverse from '@babel/traverse'
+import path from 'path'
+import { newHash, type LoaderModule } from './loaders-utils'
 
-const path = require('path')
-
-function newHash(name) {
-  return crypto.createHash('md5').update(name).digest('hex')
-}
-
-module.exports = function removeStaticFromClient(source) {
+export = function (this: LoaderModule, source: string) {
   const id = this.resourcePath.replace(this.rootContext, '')
-  let hashPosition
-  let klassName
-  let hashes = {}
-  let initiateDeps = []
-  let imports = []
-  const injections = {}
-  const positions = []
+  let hashPosition: number
+  let klassName: string
+  let hashes: Record<string, string> = {}
+  let initiateDeps: string[] = []
+  let imports: string[] = []
+  const injections: Record<number, { end: number; name: string }> = {}
+  const positions: number[] = []
   const ast = parse(source, {
     sourceType: 'module',
     plugins: ['classProperties', 'jsx', 'typescript']
   })
   traverse(ast, {
     ImportDeclaration(path) {
-      imports.push(path.node.source.extra.rawValue)
+      imports.push(path.node.source.extra.rawValue.toString())
     },
     ClassDeclaration(path) {
       klassName = path.node.id.name
@@ -38,16 +32,16 @@ module.exports = function removeStaticFromClient(source) {
       if (path.node.static && path.node.async) {
         injections[path.node.start] = {
           end: path.node.end,
-          name: path.node.key.name
+          name: path.node.key['name']
         }
         if (!positions.includes(path.node.start)) {
           positions.push(path.node.start)
         }
-        if (!path.node.key.name.startsWith('_')) {
-          hashes[path.node.key.name] = newHash(path.node.key.name)
+        if (!path.node.key['name'].startsWith('_')) {
+          hashes[path.node.key['name']] = newHash(path.node.key['name'])
         }
       }
-      if (path.node.key.name === 'initiate') {
+      if (path.node.key['name'] === 'initiate') {
         // TODO: get initiate deps on Server Functions
         // removing local functions/variables with same name
         const variables = path.node.body.body.filter(node => {
@@ -58,8 +52,8 @@ module.exports = function removeStaticFromClient(source) {
   })
   positions.reverse()
   positions.push(0)
-  const outputs = []
-  let last
+  const outputs: string[] = []
+  let last: number
   for (const position of positions) {
     let code = source.slice(position, last)
     last = position
@@ -92,9 +86,6 @@ module.exports = function removeStaticFromClient(source) {
     }
   }
   let newSource = outputs.reverse().join('')
-  if (newSource.includes('underlineRemovedFromClient')) {
-    // console.log(newSource)
-  }
   if (!klassName) return newSource
 
   const runtime_accept = `

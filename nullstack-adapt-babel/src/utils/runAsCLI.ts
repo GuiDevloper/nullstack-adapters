@@ -1,9 +1,8 @@
-// @ts-check
-const path = require('path')
-const fs = require('fs')
-const { atCWD, disabledAdapter } = require('.')
+import path from 'path'
+import fs from 'fs'
+import { atCWD, disabledAdapter } from '.'
 
-function runAsCLI(indexDir) {
+function runAsCLI(indexDir: string) {
   const configPath = atCWD('node_modules/nullstack/webpack.config.js')
   const configFile = fs.readFileSync(configPath, 'utf8')
   const isDisabled = disabledAdapter()
@@ -20,4 +19,4 @@ function runAsCLI(indexDir) {
   fs.writeFileSync(configPath, configFile.replace(lines.default, lines.babel))
 }
 
-module.exports = runAsCLI
+export default runAsCLI

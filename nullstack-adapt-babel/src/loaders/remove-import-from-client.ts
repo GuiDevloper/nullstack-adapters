@@ -1,5 +1,5 @@
-const parse = require('@babel/parser').parse
-const traverse = require('@babel/traverse').default
+import { parse } from '@babel/parser'
+import traverse from '@babel/traverse'
 
 const parentTypes = [
   'ImportDefaultSpecifier',
@@ -7,19 +7,20 @@ const parentTypes = [
   'ImportNamespaceSpecifier'
 ]
 
-module.exports = function (source) {
+export = function (source: string): string {
   const ast = parse(source, {
     sourceType: 'module',
     plugins: ['classProperties', 'jsx', 'typescript']
   })
-  const imports = {}
+  const imports: Record<string, { lines: number[]; key: string }> = {}
   function findImports(path) {
-    // console.log(path)
     if (path.node.local.name !== 'Nullstack') {
       const parent = path.findParent(p => p.isImportDeclaration())
-      const start = parent.node.loc.start.line
-      const end = parent.node.loc.end.line
-      const lines = new Array(end - start + 1).fill().map((d, i) => i + start)
+      const start: number = parent.node.loc.start.line
+      const end: number = parent.node.loc.end.line
+      const lines: number[] = new Array(end - start + 1)
+        .fill(null)
+        .map((d, i) => i + start)
       const key = lines.join('.')
       imports[path.node.local.name] = { lines, key }
     }

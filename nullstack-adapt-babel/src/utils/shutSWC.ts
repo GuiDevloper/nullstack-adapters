@@ -1,12 +1,11 @@
-// @ts-check
-const fs = require('fs')
-const { disabledAdapter, atCWD } = require('.')
+import fs from 'fs'
+import { disabledAdapter, atCWD } from '.'
 
 function shutSWC() {
   try {
     const shutRule = !disabledAdapter()
-    const getReturnStr = shut => (shut ? 'return {};' : '')
-    const getSWCRule = shut =>
+    const getReturnStr = (shut: boolean) => (shut ? 'return {};' : '')
+    const getSWCRule = (shut: boolean) =>
       `function swc(options, other) {${getReturnStr(shut)}\n`
 
     const modulePath = atCWD('node_modules/nullstack/webpack/module.js')
@@ -20,4 +19,4 @@ function shutSWC() {
   } catch {}
 }
 
-module.exports = shutSWC
+export default shutSWC

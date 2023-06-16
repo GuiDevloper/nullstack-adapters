@@ -1,19 +1,20 @@
-const parse = require('@babel/parser').parse
-const traverse = require('@babel/traverse').default
+import { parse } from '@babel/parser'
+import traverse from '@babel/traverse'
 
 const attributes = ['ref', 'bind']
 
-module.exports = function removeStaticFromClient(source) {
+export = function (source: string): string {
   const ast = parse(source, {
     sourceType: 'module',
     plugins: ['classProperties', 'jsx', 'typescript']
   })
-  const refs = []
+  type JSXRef = { start: number; end: number; replacement: string }
+  const refs: JSXRef[] = []
   traverse(ast, {
     JSXAttribute(path) {
-      const attribute = path.node.name.name
+      const attribute = path.node.name.name.toString()
       if (attributes.includes(attribute)) {
-        const expression = path.node.value.expression
+        const expression = path.node.value['expression']
         if (expression.type !== 'Identifier') {
           const object = expression.object
           const property = expression.property
@@ -33,7 +34,7 @@ module.exports = function removeStaticFromClient(source) {
     }
   })
   if (refs.length === 0) return source
-  const sources = []
+  const sources: string[] = []
   for (let i = 0; i <= refs.length; i++) {
     const prev = refs[i - 1]
     const current = refs[i]

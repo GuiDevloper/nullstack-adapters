@@ -1,25 +1,28 @@
 #! /usr/bin/env node
-// @ts-check
-const { getOptions, disabledAdapter } = require('./utils')
-const shutSWC = require('./utils/shut-swc')
-const runAsCLI = require('./utils/runAsCLI')
-const { newConfig } = require('./loaders')
+import { getOptions, disabledAdapter } from './utils'
+import shutSWC from './utils/shutSWC'
+import runAsCLI from './utils/runAsCLI'
+import { newConfig } from './loaders'
+import { type Options } from './utils/getOptions'
 
 if (require.main === module) {
   runAsCLI(__dirname)
 }
 
-/**
- *
- * @param {Array<(...[]) => {module: {rules: Array<{}>}}>} configs
- */
-function useBabel(configs) {
+type Config = {
+  optimization: Array<{}>
+  module: { rules: Array<{}> }
+}
+
+type ConfigFunction = (env: object, argv: object) => Config
+
+function useBabel(configs: ConfigFunction[]): ConfigFunction[] {
   shutSWC()
   if (disabledAdapter()) return configs
 
-  const targets = ['server', 'client']
+  const targets: Options['target'][] = ['server', 'client']
   return configs.map((config, configId) => {
-    return (_env, argv) => {
+    return (_env: object, argv: object) => {
       const oldConfig = config(_env, argv)
       const oldRules = oldConfig.module.rules
       // removes old runtime
@@ -33,11 +36,11 @@ function useBabel(configs) {
             ...oldRules.slice(0, 3),
             ...newConfig(options),
             ...oldRules.slice(-2)
-          ].filter(Boolean)
+          ]
         }
       }
     }
   })
 }
 
-module.exports = useBabel
+export = useBabel

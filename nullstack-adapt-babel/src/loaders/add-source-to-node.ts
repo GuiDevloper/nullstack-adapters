@@ -1,8 +1,8 @@
-const parse = require('@babel/parser').parse
-const traverse = require('@babel/traverse').default
+import { parse } from '@babel/parser'
+import traverse from '@babel/traverse'
 
-module.exports = function (source) {
-  const uniquePositions = new Set()
+export = function (source: string): string {
+  const uniquePositions: Set<number> = new Set()
   const ast = parse(source, {
     sourceType: 'module',
     plugins: ['classProperties', 'jsx', 'typescript']
@@ -12,13 +12,13 @@ module.exports = function (source) {
       if (path.parent.type === 'JSXAttribute') {
         if (path.node.name.startsWith('on')) {
           const element = path.findParent(
-            p => p.type === 'JSXOpeningElement' && p.node.attributes
+            p => p.type === 'JSXOpeningElement' && p.node['attributes']
           )
-          const hasSource = element.node.attributes.find(
+          const hasSource = element.node['attributes'].find(
             a => a?.name?.name === 'source'
           )
           if (!hasSource) {
-            const start = element.node.attributes[0].start
+            const start = element.node['attributes'][0].start
             uniquePositions.add(start)
           }
         }
@@ -29,8 +29,8 @@ module.exports = function (source) {
   const positions = [...uniquePositions]
   positions.reverse()
   positions.push(0)
-  const outputs = []
-  let last
+  const outputs: string[] = []
+  let last: number
   for (const position of positions) {
     const code = source.slice(position, last)
     last = position

@@ -1,21 +1,21 @@
-const parse = require('@babel/parser').parse
-const traverse = require('@babel/traverse').default
+import { parse } from '@babel/parser'
+import traverse from '@babel/traverse'
 
-module.exports = function (source) {
+export = function (source: string): string {
   const ast = parse(source, {
     sourceType: 'module',
     plugins: ['classProperties', 'jsx', 'typescript']
   })
-  let klassName
-  let klassPath
+  let klassName: string
+  let klassPath: string
   traverse(ast, {
     MemberExpression(path) {
       if (
-        path.node.property.name === 'start' &&
+        path.node.property['name'] === 'start' &&
         path.node.object &&
-        path.node.object.name === 'Nullstack'
+        path.node.object['name'] === 'Nullstack'
       ) {
-        klassName = path.parent.arguments[0].name
+        klassName = path.parent['arguments'][0].name
       }
     }
   })
@@ -23,7 +23,7 @@ module.exports = function (source) {
   traverse(ast, {
     ImportDeclaration(path) {
       if (path.node.specifiers[0].local.name === klassName) {
-        klassPath = path.node.source.extra.rawValue
+        klassPath = path.node.source.extra.rawValue as string
       }
     }
   })
