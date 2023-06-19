@@ -16,7 +16,8 @@
     "build": "npm run clean && npm run esbuild prod && tsc --emitDeclarationOnly",
     "esbuild": "node esbuild.config.js",
     "clean": "rimraf ./dist",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "test": "vitest --reporter=verbose"
   },
   "dependencies": {
     "@babel/core": "^7.18.13",
@@ -36,9 +37,11 @@
   "devDependencies": {
     "@types/babel__traverse": "^7.20.1",
     "@types/node": "^20.3.0",
+    "nullstack": "0.19.2",
     "rimraf": "5.0.1",
     "tiny-glob": "^0.2.9",
-    "typescript": ">=3.0.0"
+    "typescript": ">=3.0.0",
+    "vitest": "^0.32.2"
   },
   "keywords": [
     "nullstack",
