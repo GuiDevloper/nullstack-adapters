@@ -5,6 +5,7 @@ const glob = require('tiny-glob')
   const files = await glob('src/**/*.{js,ts}', {
     filesOnly: true
   })
+  const isProduction = process.argv[2] === 'prod'
   /** @type esbuild.BuildOptions */
   const esbuild_options = {
     entryPoints: files,
@@ -13,10 +14,9 @@ const glob = require('tiny-glob')
     outdir: 'dist',
     format: 'cjs',
     treeShaking: true,
-    minify: true,
+    minify: isProduction,
     allowOverwrite: true
   }
-  const isProduction = process.argv[2] === 'prod'
   if (isProduction) {
     return esbuild.buildSync(esbuild_options)
   }
