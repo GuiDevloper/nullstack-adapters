@@ -9,4 +9,5 @@ export type LoaderModule = {
   rootContext: string
   getOptions: () => Record<string, any>
   callback: (err: any, source: string, sourceMap: string) => void
+  async: () => LoaderModule['callback']
 }

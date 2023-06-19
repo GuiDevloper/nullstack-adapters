@@ -10,6 +10,6 @@ function disabledAdapter(): boolean {
   return DEFAULT_CONFIG || process.env.DEFAULT_CONFIG
 }
 
-import getOptions from './getOptions'
+export * from './getOptions'
 
-export { atCWD, disabledAdapter, getOptions }
+export { atCWD, disabledAdapter }

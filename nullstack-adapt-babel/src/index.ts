@@ -3,7 +3,7 @@ import { getOptions, disabledAdapter } from './utils'
 import shutSWC from './utils/shutSWC'
 import runAsCLI from './utils/runAsCLI'
 import { newConfig } from './loaders'
-import { type Options } from './utils/getOptions'
+import type { RawOptions, Options } from './utils/getOptions'
 
 if (require.main === module) {
   runAsCLI(__dirname)
@@ -22,7 +22,7 @@ function useBabel(configs: ConfigFunction[]): ConfigFunction[] {
 
   const targets: Options['target'][] = ['server', 'client']
   return configs.map((config, configId) => {
-    return (_env: object, argv: object) => {
+    return (_env: object, argv: RawOptions) => {
       const oldConfig = config(_env, argv)
       const oldRules = oldConfig.module.rules
       // removes old runtime

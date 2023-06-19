@@ -218,7 +218,17 @@ function injectHmr(options: Options) {
   }
 }
 
-function newConfig(options: Options): Array<{}> {
+export type Loader = {
+  test?: RegExp
+  loader?: string
+  options?: {}
+  use?: {
+    loader: string
+    options: {}
+  }
+}
+
+function newConfig(options: Options): Loader[] {
   return [
     runtime(options),
     js(options),

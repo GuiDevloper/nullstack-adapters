@@ -14,7 +14,14 @@ export type Options = {
   configFolder: string
 }
 
-function getOptions(target: Options['target'], options: any): Options {
+export type RawOptions = Partial<Options> & {
+  skipCache?: boolean
+}
+
+function oldGetOptions(
+  target: Options['target'],
+  options: RawOptions
+): Options {
   const disk = !!options.disk
   const environment = options.environment
   const entry = existsSync(path.posix.join(process.cwd(), `${target}.ts`))
@@ -40,8 +47,8 @@ function getOptions(target: Options['target'], options: any): Options {
   }
 }
 
-export default function (...args: [Options['target'], any]) {
-  const options = getOptions(...args)
+export function getOptions(...args: [Options['target'], RawOptions]) {
+  const options = oldGetOptions(...args)
   options.configFolder = path.dirname('nullstack/webpack.config.js')
   return options
 }
