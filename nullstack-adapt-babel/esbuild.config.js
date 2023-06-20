@@ -24,4 +24,13 @@ const glob = require('tiny-glob')
   const ctx = esbuild.context(esbuild_options)
   ;(await ctx).watch()
   console.log('esbuild is watching...')
+
+  const isTest = process.argv[2] === 'test'
+  if (isTest) {
+    const { spawn } = require('child_process')
+    spawn('vitest', ['--reporter=verbose --config ./test/vite.config.ts'], {
+      shell: true,
+      stdio: 'inherit'
+    })
+  }
 })()

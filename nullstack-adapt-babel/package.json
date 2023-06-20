@@ -17,7 +17,7 @@
     "esbuild": "node esbuild.config.js",
     "clean": "rimraf ./dist",
     "prepublishOnly": "npm run build",
-    "test": "vitest --reporter=verbose"
+    "test": "npm run esbuild test"
   },
   "dependencies": {
     "@babel/core": "^7.18.13",

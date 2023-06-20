@@ -1,3 +1,5 @@
+// run tests once to setup test-deps.ts
+import('./test-deps')
 import { test, expect } from 'vitest'
 import path from 'path'
 import fs from 'fs'
