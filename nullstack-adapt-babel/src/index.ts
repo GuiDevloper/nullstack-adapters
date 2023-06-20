@@ -1,8 +1,8 @@
 #! /usr/bin/env node
-import { getOptions, disabledAdapter } from './utils'
+import { getOptions, disabledAdapter, removeRule, getRules } from './utils'
 import shutSWC from './utils/shutSWC'
 import runAsCLI from './utils/runAsCLI'
-import { type UserSettings, newConfig } from './loaders'
+import { type UserSettings, newConfig, type Loader } from './loaders'
 import type { RawOptions, Options } from './utils/getOptions'
 
 if (require.main === module) {
@@ -11,10 +11,10 @@ if (require.main === module) {
 
 type Config = {
   optimization: Array<{}>
-  module: { rules: Array<{}> }
+  module: { rules: Loader[] }
 }
 
-type ConfigFunction = (env: object, argv: object) => Config
+type ConfigFunction = (env: object, argv: RawOptions) => Config
 
 function useBabel(
   configs: ConfigFunction[],
@@ -27,18 +27,24 @@ function useBabel(
   return configs.map((config, configId) => {
     return (_env: object, argv: RawOptions) => {
       const oldConfig = config(_env, argv)
-      const oldRules = oldConfig.module.rules
-      // removes old runtime
-      oldRules.pop()
+      const oldRules = removeRule(oldConfig.module.rules, {
+        loader: 'loaders/inject-runtime.js'
+      })
       const options = getOptions(targets[configId], argv)
       return {
         ...oldConfig,
         optimization: require('./utils/optimization')(options),
         module: {
           rules: [
-            ...oldRules.slice(0, 3),
+            ...getRules(oldRules, [
+              { loader: 'loaders/trace.js' },
+              { test: /\.s?[ac]ss$/ }
+            ]),
             ...newConfig(options, userSettings),
-            ...oldRules.slice(-2)
+            ...getRules(oldRules, [
+              { loader: 'loaders/shut-up-loader.js' },
+              { type: 'asset/source' }
+            ])
           ]
         }
       }
