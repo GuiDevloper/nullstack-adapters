@@ -90,25 +90,37 @@ function replaceProject(options: Options) {
   }
 }
 
-function resolveBabelPresets(
-  presets: BabelLoaderOptions['options']['presets']
+function resolveBabelPlugins(
+  plugins: BabelLoaderOptions['options']['plugins']
 ) {
-  return presets.map(preset =>
-    Array.isArray(preset)
-      ? [require.resolve(preset[0]), preset[1]]
-      : require.resolve(preset)
+  return plugins.map(plugin =>
+    Array.isArray(plugin)
+      ? [require.resolve(plugin[0]), plugin[1]]
+      : require.resolve(plugin)
   )
 }
 
 type BabelLoaderOptions = {
   test: RegExp
   options: {
-    presets: Array<string | [string, object]>
+    // presets: Array<string | [string, object]>
     plugins: Array<string | [string, object]>
   }
 }
 
-function babel(_options: Options, other: BabelLoaderOptions) {
+function getBabelPresets(options: Options): ([string, object] | string)[] {
+  return [
+    [
+      '@babel/preset-env',
+      {
+        targets: options.target === 'server' ? { node: 'current' } : 'defaults'
+      }
+    ],
+    '@babel/preset-react'
+  ]
+}
+
+function babel(options: Options, other: BabelLoaderOptions) {
   return {
     test: other.test,
     resolve: {
@@ -119,8 +131,8 @@ function babel(_options: Options, other: BabelLoaderOptions) {
       options: {
         ...other.options,
         sourceType: 'unambiguous',
-        presets: resolveBabelPresets(other.options.presets),
-        plugins: resolveBabelPresets(other.options.plugins)
+        presets: resolveBabelPlugins(getBabelPresets(options)),
+        plugins: resolveBabelPlugins(other.options.plugins)
       }
     }
   }
@@ -130,7 +142,6 @@ function js(options: Options) {
   return babel(options, {
     test: /\.js$/,
     options: {
-      presets: [['@babel/preset-env', { targets: { node: '10' } }]],
       plugins: [
         '@babel/plugin-proposal-export-default-from',
         '@babel/plugin-proposal-class-properties'
@@ -143,10 +154,6 @@ function ts(options: Options) {
   return babel(options, {
     test: /\.ts$/,
     options: {
-      presets: [
-        ['@babel/preset-env', { targets: { node: '10' } }],
-        '@babel/preset-react'
-      ],
       plugins: ['@babel/plugin-transform-typescript']
     }
   })
@@ -156,10 +163,6 @@ function njs(options: Options) {
   return babel(options, {
     test: /\.(njs|jsx)$/,
     options: {
-      presets: [
-        ['@babel/preset-env', { targets: { node: '10' } }],
-        '@babel/preset-react'
-      ],
       plugins: [
         '@babel/plugin-proposal-export-default-from',
         '@babel/plugin-proposal-class-properties',
@@ -180,10 +183,6 @@ function nts(options: Options) {
   return babel(options, {
     test: /\.(nts|tsx)$/,
     options: {
-      presets: [
-        ['@babel/preset-env', { targets: { node: '10' } }],
-        '@babel/preset-react'
-      ],
       plugins: [
         [
           '@babel/plugin-transform-typescript',

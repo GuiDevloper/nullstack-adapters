@@ -1,15 +1,12 @@
-import $runtime from 'nullstack/runtime';function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-/* eslint-disable no-console */
+import $runtime from 'nullstack/runtime';/* eslint-disable no-console */
 import './Application.css';
 import Nullstack from 'nullstack';
 import Home from './Home';
 class Application extends Nullstack {
-  constructor(...args) {
-    super(...args);
-    _defineProperty(this, "count", 0);
-  }
+  static hash = 'ClientProduction___Application';
+  static testServer = $runtime.invoke("testServer", this.hash);
+  count = 0;
+  static serverCount = 0;
   logMessage() {
     console.log('message!');
   }
@@ -20,9 +17,10 @@ class Application extends Nullstack {
       }
     };
   }
-  async prepare({
-    page
-  }) {
+  async prepare(_ref) {
+    let {
+      page
+    } = _ref;
     console.log(`prepare! ${page}`);
   }
   async hydrate() {
@@ -49,9 +47,6 @@ class Application extends Nullstack {
     })));
   }
 }
-_defineProperty(Application, "hash", 'ClientProduction___Application');
-_defineProperty(Application, "testServer", $runtime.invoke("testServer", Application.hash));
-_defineProperty(Application, "serverCount", 0);
 export default Application;
 if (module.hot) {
   $runtime.accept(module, '/ClientProduction.tsx', ["./Application.css", "nullstack", "./Home"], [{
