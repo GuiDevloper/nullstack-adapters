@@ -63,16 +63,18 @@ type Icons = { [K: string]: string }
 
 function icons(options: Options) {
   const icons: Icons = {}
-  const publicFiles = readdirSync(
-    path.posix.join(options.projectFolder, 'public')
-  )
-  const iconFileRegex = /icon-(\d+)x\1\.[a-zA-Z]+/
-  for (const file of publicFiles) {
-    if (iconFileRegex.test(file)) {
-      const size: string = file.split('x')[1].split('.')[0]
-      icons[size] = `/${file}`
+  try {
+    const publicFiles = readdirSync(
+      path.posix.join(options.projectFolder, 'public')
+    )
+    const iconFileRegex = /icon-(\d+)x\1\.[a-zA-Z]+/
+    for (const file of publicFiles) {
+      if (iconFileRegex.test(file)) {
+        const size: string = file.split('x')[1].split('.')[0]
+        icons[size] = `/${file}`
+      }
     }
-  }
+  } catch {}
   return { ICONS: JSON.stringify(icons) }
 }
 
