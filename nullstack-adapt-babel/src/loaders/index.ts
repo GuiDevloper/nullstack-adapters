@@ -1,6 +1,7 @@
 import path from 'path'
 import { readdirSync } from 'fs'
 import { type Options } from '../utils/getOptions'
+import { type BabelLoaderOptions, getBabelLoaders } from './babel-loaders'
 
 function runtime(options: Options) {
   return {
@@ -90,122 +91,6 @@ function replaceProject(options: Options) {
   }
 }
 
-function resolveBabelPlugins(
-  plugins: BabelLoaderOptions['options']['plugins']
-) {
-  return plugins.map(plugin =>
-    Array.isArray(plugin)
-      ? [require.resolve(plugin[0]), plugin[1]]
-      : require.resolve(plugin)
-  )
-}
-
-type BabelLoaderOptions = {
-  test: RegExp
-  options: {
-    // presets: Array<string | [string, object]>
-    plugins: Array<string | [string, object]>
-  }
-}
-
-function getBabelPresets(options: Options): ([string, object] | string)[] {
-  return [
-    [
-      '@babel/preset-env',
-      {
-        targets: options.target === 'server' ? { node: 'current' } : 'defaults'
-      }
-    ],
-    '@babel/preset-react'
-  ]
-}
-
-function babel(options: Options, other: BabelLoaderOptions) {
-  return {
-    test: other.test,
-    resolve: {
-      extensions: ['.njs', '.js', '.nts', '.ts', '.jsx', '.tsx']
-    },
-    use: {
-      loader: require.resolve('babel-loader'),
-      options: {
-        ...other.options,
-        sourceType: 'unambiguous',
-        presets: resolveBabelPlugins(getBabelPresets(options)),
-        plugins: resolveBabelPlugins(other.options.plugins)
-      }
-    }
-  }
-}
-
-function js(options: Options) {
-  return babel(options, {
-    test: /\.js$/,
-    options: {
-      plugins: [
-        '@babel/plugin-proposal-export-default-from',
-        '@babel/plugin-proposal-class-properties'
-      ]
-    }
-  })
-}
-
-function ts(options: Options) {
-  return babel(options, {
-    test: /\.ts$/,
-    options: {
-      plugins: ['@babel/plugin-transform-typescript']
-    }
-  })
-}
-
-function njs(options: Options) {
-  return babel(options, {
-    test: /\.(njs|jsx)$/,
-    options: {
-      plugins: [
-        '@babel/plugin-proposal-export-default-from',
-        '@babel/plugin-proposal-class-properties',
-        [
-          '@babel/plugin-transform-react-jsx',
-          {
-            pragma: '$runtime.element',
-            pragmaFrag: '$runtime.fragment',
-            throwIfNamespace: false
-          }
-        ]
-      ]
-    }
-  })
-}
-
-function nts(options: Options) {
-  return babel(options, {
-    test: /\.(nts|tsx)$/,
-    options: {
-      plugins: [
-        [
-          '@babel/plugin-transform-typescript',
-          {
-            isTSX: true,
-            allExtensions: true,
-            tsxPragma: '$runtime.element',
-            tsxPragmaFrag: '$runtime.fragment'
-          }
-        ],
-        [
-          '@babel/plugin-transform-react-jsx',
-          {
-            pragma: '$runtime.element',
-            pragmaFrag: '$runtime.fragment',
-            throwIfNamespace: false
-          }
-        ]
-      ]
-    }
-  })
-}
-
 function injectHmr(options: Options) {
   if (options.target !== 'client' || options.environment !== 'development') {
     return {}
@@ -214,6 +99,13 @@ function injectHmr(options: Options) {
   return {
     test: /client\.(js|ts)$/,
     loader: getLoader('inject-hmr.js')
+  }
+}
+
+export type UserSettings = {
+  babel?: {
+    presets?: BabelLoaderOptions['options']['presets']
+    plugins?: BabelLoaderOptions['options']['plugins']
   }
 }
 
@@ -227,13 +119,10 @@ export type Loader = {
   }
 }
 
-function newConfig(options: Options): Loader[] {
+function newConfig(options: Options, userSettings?: UserSettings): Loader[] {
   return [
     runtime(options),
-    js(options),
-    ts(options),
-    njs(options),
-    nts(options),
+    ...getBabelLoaders(options, userSettings),
     replaceEnvironment(options),
     replaceProject(options),
     injectHmr(options),

@@ -2,7 +2,7 @@
 import { getOptions, disabledAdapter } from './utils'
 import shutSWC from './utils/shutSWC'
 import runAsCLI from './utils/runAsCLI'
-import { newConfig } from './loaders'
+import { type UserSettings, newConfig } from './loaders'
 import type { RawOptions, Options } from './utils/getOptions'
 
 if (require.main === module) {
@@ -16,7 +16,10 @@ type Config = {
 
 type ConfigFunction = (env: object, argv: object) => Config
 
-function useBabel(configs: ConfigFunction[]): ConfigFunction[] {
+function useBabel(
+  configs: ConfigFunction[],
+  userSettings?: UserSettings
+): ConfigFunction[] {
   shutSWC()
   if (disabledAdapter()) return configs
 
@@ -34,7 +37,7 @@ function useBabel(configs: ConfigFunction[]): ConfigFunction[] {
         module: {
           rules: [
             ...oldRules.slice(0, 3),
-            ...newConfig(options),
+            ...newConfig(options, userSettings),
             ...oldRules.slice(-2)
           ]
         }
