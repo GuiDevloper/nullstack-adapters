@@ -39,6 +39,7 @@ class Application extends Nullstack {
     }));
   }
   render() {
+    const Head = this.renderHead;
     return $runtime.element("body", null, $runtime.element(Head, null), $runtime.element($runtime.fragment, null, $runtime.element("button", {
       source: this,
       onclick: this.hydrate

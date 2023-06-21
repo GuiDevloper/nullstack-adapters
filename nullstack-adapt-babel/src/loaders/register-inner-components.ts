@@ -12,7 +12,12 @@ export = function (source: string): string {
     ClassMethod(path) {
       function identify(subpath) {
         if (/^[A-Z]/.test(subpath.node.name)) {
-          if (!path.scope.hasBinding(subpath.node.name)) {
+          const hasBinding = path.scope.hasBinding(subpath.node.name)
+          const bindingIsType = !!path.scope.getBindingIdentifier(
+            subpath.node.name
+          )?.typeAnnotation
+          const isInnerComponent = !hasBinding || bindingIsType
+          if (isInnerComponent) {
             const start = path.node.body.body[0].start
             if (!positions.includes(start)) {
               positions.push(start)
