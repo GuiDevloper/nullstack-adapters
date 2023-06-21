@@ -65,6 +65,6 @@ test.each(TEST_CASES)('%s', async (FILENAME, RAW_OPTIONS) => {
       }
     })
   }
-  const testEXPECTED = getFile(`expected/${FILENAME}`)
-  expect(testRESULT).toStrictEqual(testEXPECTED)
+  const testEXPECTED = path.join(OPTIONS.projectFolder, `expected/${FILENAME}`)
+  expect(testRESULT).toMatchFileSnapshot(testEXPECTED)
 })
