@@ -131,15 +131,7 @@ function newConfig(options: Options, userSettings?: UserSettings): Loader[] {
     ...oldLoader(options),
     {
       test: /\.(njs|nts|jsx|tsx)$/,
-      loader: getLoader('register-inner-components.js')
-    },
-    {
-      test: /\.(njs|nts|jsx|tsx)$/,
-      loader: getLoader('add-source-to-node.js')
-    },
-    {
-      test: /\.(njs|nts|jsx|tsx)$/,
-      loader: getLoader('transform-node-ref.js')
+      loader: getLoader('merged/index.js')
     }
   ].filter(rule => !!rule.test)
 }
