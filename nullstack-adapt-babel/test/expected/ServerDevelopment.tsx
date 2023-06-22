@@ -5,6 +5,7 @@ import Home from './Home';
 class Application extends Nullstack {
   count = 0;
   static serverCount = 0;
+  text = '';
   logMessage() {
     console.log('message!');
   }
@@ -38,12 +39,60 @@ class Application extends Nullstack {
       rel: "stylesheet"
     }));
   }
+  renderNestedInnerComponent() {
+    return $runtime.element("div", {
+      "data-nested": true
+    });
+  }
+  renderInnerReference({
+    prop
+  }) {
+    return $runtime.element("div", {
+      "data-reference": prop
+    });
+  }
+  renderInnerComponent({
+    children,
+    reference: Reference
+  }) {
+    const NestedInnerComponent = this.renderNestedInnerComponent;
+    return $runtime.element("div", {
+      class: "InnerComponent"
+    }, $runtime.element("p", null, " Inner Component "), $runtime.element(NestedInnerComponent, null), $runtime.element(Reference, {
+      prop: true
+    }), children);
+  }
+  renderRepeated({
+    number
+  }) {
+    return $runtime.element("div", {
+      "data-repeated": number
+    });
+  }
   render() {
+    const Repeated = this.renderRepeated;
+    const InnerComponent = this.renderInnerComponent;
     const Head = this.renderHead;
-    return $runtime.element("body", null, $runtime.element(Head, null), $runtime.element($runtime.fragment, null, $runtime.element("button", {
+    return $runtime.element("body", null, $runtime.element(Head, null), $runtime.element(InnerComponent, {
+      reference: this.renderInnerReference
+    }, "children"), $runtime.element(Repeated, {
+      number: 1
+    }), $runtime.element(Repeated, {
+      number: 2
+    }), $runtime.element($runtime.fragment, null, $runtime.element("button", {
       source: this,
-      onclick: this.hydrate
-    }, "Click here!"), $runtime.element($runtime.fragment, null, $runtime.element("h1", null, "count: ", this.count)), $runtime.element("a", {
+      onclick: this.hydrate,
+      onkeyup: this.hydrate,
+      onkeydown: this.hydrate
+    }, "Click here!"), $runtime.element("input", {
+      bind: {
+        object: this,
+        property: 'text'
+      },
+      source: this,
+      onkeyup: this.hydrate,
+      onkeydown: this.hydrate
+    }), $runtime.element($runtime.fragment, null, $runtime.element("h1", null, "count: ", this.count)), $runtime.element("a", {
       href: "/home"
     }, "Home!"), $runtime.element(Home, {
       route: "/home",

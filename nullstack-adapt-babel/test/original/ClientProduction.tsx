@@ -13,6 +13,7 @@ class Application extends Nullstack {
 
   count = 0;
   static serverCount = 0
+  text = ''
 
   logMessage() {
     console.log('message!')
@@ -51,12 +52,49 @@ class Application extends Nullstack {
     )
   }
 
+  renderNestedInnerComponent() {
+    return <div data-nested />
+  }
+
+  renderInnerReference({ prop }) {
+    return <div data-reference={prop} />
+  }
+
+  renderInnerComponent({ children, reference: Reference }) {
+    return (
+      <div class="InnerComponent">
+        <p> Inner Component </p>
+        <NestedInnerComponent />
+        <Reference prop />
+        {children}
+      </div>
+    )
+  }
+
+  renderRepeated({ number }) {
+    return <div data-repeated={number} />
+  }
+
   render() {
     return (
       <body>
         <Head />
+        <InnerComponent reference={this.renderInnerReference}>
+          children
+        </InnerComponent>
+        <Repeated number={1} />
+        <Repeated number={2} />
         <>
-          <button onclick={this.hydrate}>Click here!</button>
+          <button
+            onclick={this.hydrate}
+            onkeyup={this.hydrate}
+            onkeydown={this.hydrate}
+          >Click here!</button>
+          <input
+            bind={this.text}
+            onkeyup={this.hydrate}
+            onkeydown={this.hydrate}
+          />
           <>
             <h1>count: {this.count}</h1>
           </>
