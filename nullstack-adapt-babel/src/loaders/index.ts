@@ -16,26 +16,12 @@ function getLoader(loader: string) {
   return path.join(__dirname, loader)
 }
 
-function oldLoader(options: Options) {
-  if (options.target === 'server') {
-    return [
-      {
-        test: /\.(njs|nts|jsx|tsx)$/,
-        loader: getLoader('register-static-from-server.js')
-      }
-    ]
+function mergedLoaders(options: Options) {
+  return {
+    test: /\.(njs|nts|jsx|tsx)$/,
+    loader: getLoader('merged/index.js'),
+    options
   }
-
-  return [
-    {
-      test: /\.(njs|nts|jsx|tsx)$/,
-      loader: getLoader('remove-import-from-client.js')
-    },
-    {
-      test: /\.(njs|nts|jsx|tsx)$/,
-      loader: getLoader('remove-static-from-client.js')
-    }
-  ]
 }
 
 function environment(_options: Options) {
@@ -93,14 +79,14 @@ function replaceProject(options: Options) {
   }
 }
 
-function injectHmr(options: Options) {
+function injectHmrClient(options: Options) {
   if (options.target !== 'client' || options.environment !== 'development') {
     return {}
   }
 
   return {
     test: /client\.(js|ts)$/,
-    loader: getLoader('inject-hmr.js')
+    loader: getLoader('inject-hmr-client.js')
   }
 }
 
@@ -127,12 +113,8 @@ function newConfig(options: Options, userSettings?: UserSettings): Loader[] {
     ...getBabelLoaders(options, userSettings),
     replaceEnvironment(options),
     replaceProject(options),
-    injectHmr(options),
-    ...oldLoader(options),
-    {
-      test: /\.(njs|nts|jsx|tsx)$/,
-      loader: getLoader('merged/index.js')
-    }
+    injectHmrClient(options),
+    mergedLoaders(options)
   ].filter(rule => !!rule.test)
 }
 

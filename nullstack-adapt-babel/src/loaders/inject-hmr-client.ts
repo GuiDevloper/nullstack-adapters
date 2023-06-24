@@ -11,9 +11,9 @@ export = function (source: string): string {
   traverse(ast, {
     MemberExpression(path) {
       if (
-        path.node.property['name'] === 'start' &&
         path.node.object &&
-        path.node.object['name'] === 'Nullstack'
+        path.node.object['name'] === 'Nullstack' &&
+        path.node.property['name'] === 'start'
       ) {
         klassName = path.parent['arguments'][0].name
       }
