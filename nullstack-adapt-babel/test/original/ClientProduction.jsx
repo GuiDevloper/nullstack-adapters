@@ -1,15 +1,10 @@
 /* eslint-disable no-console */
 import './Application.css'
-import Nullstack, {
-  NullstackClientContext,
-  NullstackServerContext
-} from 'nullstack'
+import Nullstack from 'nullstack'
 
 import { readFileSync } from 'fs'
 
 import Home from './Home'
-
-declare const Head: Application['renderHead']
 
 class Application extends Nullstack {
 
@@ -33,7 +28,7 @@ class Application extends Nullstack {
     console.log('message!')
   }
 
-  static async testServer({ environment }: Partial<NullstackServerContext>) {
+  static async testServer({ environment }) {
     try {
       const _A = readFileSync('')
     } catch {}
@@ -49,7 +44,7 @@ class Application extends Nullstack {
     }
   }
 
-  async prepare({ page }: NullstackClientContext) {
+  async prepare({ page }) {
     console.log(`prepare! ${page}`)
   }
 

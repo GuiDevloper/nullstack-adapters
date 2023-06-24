@@ -5,6 +5,12 @@ import Home from './Home';
 class Application extends Nullstack {
   static hash = 'ClientProduction___Application';
   static testServer = $runtime.invoke("testServer", this.hash);
+  static a = 0;
+  b = 0;
+  _underscoredAttributeFunction = function (value) {
+    this.b = value;
+  };
+  _underscored = 0;
   count = 0;
   static serverCount = 0;
   text = '';
@@ -26,6 +32,8 @@ class Application extends Nullstack {
   }
   async hydrate() {
     this.count = await Application.testServer({});
+    this._underscoredMethod(1);
+    this._underscoredAttributeFunction(1);
   }
   renderHead() {
     return $runtime.element("head", null, $runtime.element("link", {
@@ -102,7 +110,7 @@ class Application extends Nullstack {
 }
 export default Application;
 if (module.hot) {
-  $runtime.accept(module, '/ClientProduction.tsx', ["./Application.css", "nullstack", "./Home"], [{
+  $runtime.accept(module, '/ClientProduction.tsx', ["./Application.css", "nullstack", "fs", "./Home"], [{
     klass: Application,
     initiate: [],
     hashes: {

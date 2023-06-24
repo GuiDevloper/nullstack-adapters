@@ -12,6 +12,7 @@ const TEST_CASES: [string, [Options['target'], Options['environment']]][] = [
   ['ClientDevelopment.tsx', ['client', 'development']],
   ['ServerDevelopment.tsx', ['server', 'development']],
   ['ClientProduction.tsx', ['client', 'production']],
+  ['ClientProduction.jsx', ['client', 'production']],
   ['ServerProduction.tsx', ['server', 'production']],
   ['project.js', ['server', 'development']],
   ['client.ts', ['client', 'development']]

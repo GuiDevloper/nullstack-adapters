@@ -1,19 +1,21 @@
-import $runtime from 'nullstack/runtime';/* eslint-disable no-console */
+import $runtime from 'nullstack/runtime';function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+/* eslint-disable no-console */
 import './Application.css';
 import Nullstack from 'nullstack';
 import Home from './Home';
 class Application extends Nullstack {
-  static hash = 'ClientDevelopment___Application';
-  static testServer = $runtime.invoke("testServer", this.hash);
-  static a = 0;
-  b = 0;
-  _underscoredAttributeFunction = function (value) {
-    this.b = value;
-  };
-  _underscored = 0;
-  count = 0;
-  static serverCount = 0;
-  text = '';
+  constructor() {
+    super(...arguments);
+    _defineProperty(this, "b", 0);
+    _defineProperty(this, "_underscoredAttributeFunction", function (value) {
+      this.b = value;
+    });
+    _defineProperty(this, "_underscored", 0);
+    _defineProperty(this, "count", 0);
+    _defineProperty(this, "text", '');
+  }
   logMessage() {
     console.log('message!');
   }
@@ -108,9 +110,13 @@ class Application extends Nullstack {
     })));
   }
 }
+_defineProperty(Application, "hash", 'ClientProduction___Application');
+_defineProperty(Application, "testServer", $runtime.invoke("testServer", Application.hash));
+_defineProperty(Application, "a", 0);
+_defineProperty(Application, "serverCount", 0);
 export default Application;
 if (module.hot) {
-  $runtime.accept(module, '/ClientDevelopment.tsx', ["./Application.css", "nullstack", "fs", "./Home"], [{
+  $runtime.accept(module, '/ClientProduction.jsx', ["./Application.css", "nullstack", "fs", "./Home"], [{
     klass: Application,
     initiate: [],
     hashes: {

@@ -5,11 +5,25 @@ import Nullstack, {
   NullstackServerContext
 } from 'nullstack'
 
+import { readFileSync } from 'fs'
+
 import Home from './Home'
 
 declare const Head: Application['renderHead']
 
 class Application extends Nullstack {
+
+  static a = 0
+  b = 0
+  static async _underscoredMethod(value) {
+    this.a = value
+  }
+
+  _underscoredAttributeFunction = function (value) {
+    this.b = value
+  }
+
+  _underscored = 0
 
   count = 0;
   static serverCount = 0
@@ -20,6 +34,9 @@ class Application extends Nullstack {
   }
 
   static async testServer({ environment }: Partial<NullstackServerContext>) {
+    try {
+      const _A = readFileSync('')
+    } catch {}
     console.log('server, envProd: ', environment.production)
     return ++this.serverCount
   }
@@ -38,6 +55,8 @@ class Application extends Nullstack {
 
   async hydrate() {
     this.count = await Application.testServer({})
+    this._underscoredMethod(1)
+    this._underscoredAttributeFunction(1)
   }
 
   renderHead() {

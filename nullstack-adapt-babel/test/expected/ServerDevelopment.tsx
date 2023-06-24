@@ -1,8 +1,19 @@
 import $runtime from 'nullstack/runtime';/* eslint-disable no-console */
 import './Application.css';
 import Nullstack from 'nullstack';
+import { readFileSync } from 'fs';
 import Home from './Home';
 class Application extends Nullstack {
+  static hash = 'ServerDevelopment___Application';
+  static a = 0;
+  b = 0;
+  static async _underscoredMethod(value) {
+    this.a = value;
+  }
+  _underscoredAttributeFunction = function (value) {
+    this.b = value;
+  };
+  _underscored = 0;
   count = 0;
   static serverCount = 0;
   text = '';
@@ -12,6 +23,9 @@ class Application extends Nullstack {
   static async testServer({
     environment
   }) {
+    try {
+      const _A = readFileSync('');
+    } catch {}
     console.log('server, envProd: ', environment.production);
     return ++this.serverCount;
   }
@@ -29,6 +43,8 @@ class Application extends Nullstack {
   }
   async hydrate() {
     this.count = await Application.testServer({});
+    this._underscoredMethod(1);
+    this._underscoredAttributeFunction(1);
   }
   renderHead() {
     return $runtime.element("head", null, $runtime.element("link", {
@@ -101,9 +117,8 @@ class Application extends Nullstack {
   }
 }
 export default Application;
-Application.hash = "ServerDevelopment___Application";
 if (module.hot) {
-  $runtime.accept(module, '/ServerDevelopment.tsx', ["./Application.css", "nullstack", "./Home"], [{
+  $runtime.accept(module, '/ServerDevelopment.tsx', ["./Application.css", "nullstack", "fs", "./Home"], [{
     klass: Application,
     initiate: [],
     hashes: {
