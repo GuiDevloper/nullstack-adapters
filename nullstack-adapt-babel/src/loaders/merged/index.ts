@@ -8,7 +8,6 @@ import addSourceToNode from './add-source-to-node'
 import registerInnerComponents from './register-inner-components'
 import registerStaticFromServer from './register-static-from-server'
 import removeStaticFromClient from './remove-static-from-client'
-import removeImportFromClient from './remove-import-from-client'
 
 export = function (this: LoaderModule, source: string): string {
   let newSource = ''
@@ -25,10 +24,8 @@ export = function (this: LoaderModule, source: string): string {
   if (options.target === 'server') {
     appendSource = registerStaticFromServer.bind(this)(ast)
   }
-
   if (options.target === 'client') {
     appendSource = removeStaticFromClient.bind(this)(ast)
-    removeImportFromClient(ast)
   }
 
   traverse(ast, {

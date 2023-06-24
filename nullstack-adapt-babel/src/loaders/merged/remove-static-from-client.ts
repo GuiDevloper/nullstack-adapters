@@ -8,6 +8,7 @@ import {
   createRuntimeAccept,
   type KlassAcceptable
 } from './merged-utils'
+import removeImportFromClient from './remove-import-from-client'
 
 export = function (this: LoaderModule, ast: ParseResult<t.File>): string {
   const id = this.resourcePath.replace(this.rootContext, '')
@@ -54,6 +55,7 @@ export = function (this: LoaderModule, ast: ParseResult<t.File>): string {
       path.get('body').unshiftContainer('body', invokations)
     }
   })
+  removeImportFromClient(ast)
   if (klasses.length === 0) return ''
 
   return createRuntimeAccept({
