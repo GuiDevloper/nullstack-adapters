@@ -23,19 +23,22 @@ export function createStaticClassProperty(
   )
 }
 
+export type KlassAcceptable = {
+  name: string
+  hashes?: Record<string, string>
+  initiateDeps?: string[]
+}
+
 type RuntimeAccept = {
   id: string
   imports: string[]
-  klassName: string
-  hashes: Record<string, string>
-  initiateDeps?: string[]
+  klasses: KlassAcceptable[]
 }
 
 export function createRuntimeAccept({
   id,
   imports,
-  klassName,
-  hashes
+  klasses
 }: RuntimeAccept): string {
   return `
   if (module.hot) {
@@ -43,13 +46,13 @@ export function createRuntimeAccept({
       module,
       '${id.split(path.sep).join('/')}',
       ${JSON.stringify(imports)},
-      [
-        {
-          klass: ${klassName},
+      [${klasses.map(
+        klass => `{
+          klass: ${klass.name},
           initiate: [],
-          hashes: ${JSON.stringify(hashes)}
-        }
-      ]
+          hashes: ${JSON.stringify(klass.hashes)}
+        }`
+      )}]
     );
   }`
 }

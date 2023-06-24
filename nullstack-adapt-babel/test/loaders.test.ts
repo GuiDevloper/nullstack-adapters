@@ -15,7 +15,9 @@ const TEST_CASES: [string, [Options['target'], Options['environment']]][] = [
   ['ClientProduction.jsx', ['client', 'production']],
   ['ServerProduction.tsx', ['server', 'production']],
   ['project.js', ['server', 'development']],
-  ['client.ts', ['client', 'development']]
+  ['client.ts', ['client', 'development']],
+  ['ClientDouble.tsx', ['client', 'production']],
+  ['ServerDouble.tsx', ['server', 'production']]
 ]
 
 test.each(TEST_CASES)('%s', async (FILENAME, RAW_OPTIONS) => {

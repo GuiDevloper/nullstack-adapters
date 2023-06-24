@@ -116,6 +116,8 @@ class Application extends Nullstack {
     })));
   }
 }
+$runtime.register(Application, "testServer");
+$runtime.register(Application);
 export default Application;
 if (module.hot) {
   $runtime.accept(module, '/ServerDevelopment.tsx', ["./Application.css", "nullstack", "fs", "./Home"], [{
@@ -126,5 +128,3 @@ if (module.hot) {
     }
   }]);
 }
-$runtime.register(Application, "testServer");
-$runtime.register(Application);

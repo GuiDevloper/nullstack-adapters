@@ -5,24 +5,26 @@ import { newHash, type LoaderModule } from '../loaders-utils'
 import {
   getKlassHash,
   createStaticClassProperty,
-  createRuntimeAccept
+  createRuntimeAccept,
+  type KlassAcceptable
 } from './merged-utils'
 
 export = function (this: LoaderModule, ast: ParseResult<t.File>): string {
   const id = this.resourcePath.replace(this.rootContext, '')
-  let klassName: string
-  let invokations: t.ClassProperty[] = []
-  let hashes: Record<string, string> = {}
-  let initiateDeps: string[] = []
   let imports: string[] = []
+  let klasses: KlassAcceptable[] = []
+  let initiateDeps: string[] = []
   traverse(ast, {
     ImportDeclaration(path) {
       imports.push(path.node.source.extra.rawValue.toString())
     },
     ClassDeclaration(path) {
-      klassName = path.node.id.name
+      const klassName = path.node.id.name
+      const klassIndex = klasses.push({ name: klassName, hashes: {} }) - 1
       const klassHash = getKlassHash(id, klassName)
-      invokations = [createStaticClassProperty('hash', `'${klassHash}'`)]
+      const invokations: t.ClassProperty[] = [
+        createStaticClassProperty('hash', `'${klassHash}'`)
+      ]
       path.node.body.body = path.node.body.body.map(node => {
         if (node.type !== 'ClassMethod') return node
         const methodName = node.key['name']
@@ -37,7 +39,7 @@ export = function (this: LoaderModule, ast: ParseResult<t.File>): string {
         }
         if (node.static && node.async) {
           if (!methodName.startsWith('_')) {
-            hashes[methodName] = newHash(methodName)
+            klasses[klassIndex].hashes[methodName] = newHash(methodName)
             invokations.push(
               createStaticClassProperty(
                 methodName,
@@ -52,14 +54,11 @@ export = function (this: LoaderModule, ast: ParseResult<t.File>): string {
       path.get('body').unshiftContainer('body', invokations)
     }
   })
-  if (!klassName) return ''
+  if (klasses.length === 0) return ''
 
-  const runtime_accept = createRuntimeAccept({
+  return createRuntimeAccept({
     id,
     imports,
-    klassName,
-    hashes
+    klasses
   })
-
-  return runtime_accept
 }
