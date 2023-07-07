@@ -33,7 +33,15 @@ function getBabelPresets(
         targets: options.target === 'server' ? { node: 'current' } : 'defaults'
       }
     ],
-    '@babel/preset-react',
+    [
+      '@babel/preset-react',
+      {
+        development: options.environment === 'development',
+        pragma: '$runtime.element',
+        pragmaFrag: '$runtime.fragment',
+        throwIfNamespace: false
+      }
+    ],
     ...(options.userSettings?.babel?.presets || [])
   ]
 }
@@ -92,15 +100,7 @@ function njs(options: BabelOptions) {
     options: {
       plugins: [
         '@babel/plugin-proposal-export-default-from',
-        '@babel/plugin-proposal-class-properties',
-        [
-          '@babel/plugin-transform-react-jsx',
-          {
-            pragma: '$runtime.element',
-            pragmaFrag: '$runtime.fragment',
-            throwIfNamespace: false
-          }
-        ]
+        '@babel/plugin-proposal-class-properties'
       ]
     }
   })
@@ -118,14 +118,6 @@ function nts(options: BabelOptions) {
             allExtensions: true,
             tsxPragma: '$runtime.element',
             tsxPragmaFrag: '$runtime.fragment'
-          }
-        ],
-        [
-          '@babel/plugin-transform-react-jsx',
-          {
-            pragma: '$runtime.element',
-            pragmaFrag: '$runtime.fragment',
-            throwIfNamespace: false
           }
         ]
       ]

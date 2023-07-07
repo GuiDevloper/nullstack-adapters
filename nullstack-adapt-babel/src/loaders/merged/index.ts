@@ -1,5 +1,5 @@
 import { parse } from '@babel/parser'
-import traverse from '@babel/traverse'
+import generate from '@babel/generator'
 import type { LoaderModule } from '../loaders-utils'
 import type { Options } from '../../utils'
 
@@ -10,7 +10,6 @@ import registerStaticFromServer from './register-static-from-server'
 import removeStaticFromClient from './remove-static-from-client'
 
 export = function (this: LoaderModule, source: string): string {
-  let newSource = ''
   const options = this.getOptions() as Options
   const ast = parse(source, {
     sourceType: 'module',
@@ -28,10 +27,6 @@ export = function (this: LoaderModule, source: string): string {
     appendSource = removeStaticFromClient.bind(this)(ast)
   }
 
-  traverse(ast, {
-    Program(path) {
-      newSource = path.toString()
-    }
-  })
+  const newSource = generate(ast, { retainLines: true }).code
   return newSource + appendSource
 }

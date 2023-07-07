@@ -1,4 +1,5 @@
-import $runtime from 'nullstack/runtime';/* eslint-disable no-console */
+import $runtime from 'nullstack/runtime';var _jsxFileName = "C:\\projects\\nullstack-adapters\\nullstack-adapt-babel\\test\\original\\ClientDevelopment.tsx";
+/* eslint-disable no-console */
 import './Application.css';
 import Nullstack from 'nullstack';
 import Home from './Home';
@@ -36,17 +37,42 @@ class Application extends Nullstack {
     this._underscoredAttributeFunction(1);
   }
   renderHead() {
-    return $runtime.element("head", null, $runtime.element("link", {
+    return $runtime.element("head", {
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 64,
+        columnNumber: 7
+      }
+    }, $runtime.element("link", {
       href: "https://fonts.gstatic.com",
-      rel: "preconnect"
+      rel: "preconnect",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 65,
+        columnNumber: 9
+      }
     }), $runtime.element("link", {
       href: "https://fonts.googleapis.com/css2?family=Crete+Round&family=Roboto&display=swap",
-      rel: "stylesheet"
+      rel: "stylesheet",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 66,
+        columnNumber: 9
+      }
     }));
   }
   renderNestedInnerComponent() {
     return $runtime.element("div", {
-      "data-nested": true
+      "data-nested": true,
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 75,
+        columnNumber: 12
+      }
     });
   }
   renderInnerReference(_ref2) {
@@ -54,7 +80,13 @@ class Application extends Nullstack {
       prop
     } = _ref2;
     return $runtime.element("div", {
-      "data-reference": prop
+      "data-reference": prop,
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 79,
+        columnNumber: 12
+      }
     });
   }
   renderInnerComponent(_ref3) {
@@ -64,9 +96,35 @@ class Application extends Nullstack {
     } = _ref3;
     const NestedInnerComponent = this.renderNestedInnerComponent;
     return $runtime.element("div", {
-      class: "InnerComponent"
-    }, $runtime.element("p", null, " Inner Component "), $runtime.element(NestedInnerComponent, null), $runtime.element(Reference, {
-      prop: true
+      class: "InnerComponent",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 84,
+        columnNumber: 7
+      }
+    }, $runtime.element("p", {
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 85,
+        columnNumber: 9
+      }
+    }, " Inner Component "), $runtime.element(NestedInnerComponent, {
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 86,
+        columnNumber: 9
+      }
+    }), $runtime.element(Reference, {
+      prop: true,
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 87,
+        columnNumber: 9
+      }
     }), children);
   }
   renderRepeated(_ref4) {
@@ -74,24 +132,68 @@ class Application extends Nullstack {
       number
     } = _ref4;
     return $runtime.element("div", {
-      "data-repeated": number
+      "data-repeated": number,
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 94,
+        columnNumber: 12
+      }
     });
   }
   render() {
     const Repeated = this.renderRepeated;
     const InnerComponent = this.renderInnerComponent;
     const Head = this.renderHead;
-    return $runtime.element("body", null, $runtime.element(Head, null), $runtime.element(InnerComponent, {
-      reference: this.renderInnerReference
+    return $runtime.element("body", {
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 99,
+        columnNumber: 7
+      }
+    }, $runtime.element(Head, {
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 100,
+        columnNumber: 9
+      }
+    }), $runtime.element(InnerComponent, {
+      reference: this.renderInnerReference,
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 101,
+        columnNumber: 9
+      }
     }, "children"), $runtime.element(Repeated, {
-      number: 1
+      number: 1,
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 104,
+        columnNumber: 9
+      }
     }), $runtime.element(Repeated, {
-      number: 2
+      number: 2,
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 105,
+        columnNumber: 9
+      }
     }), $runtime.element($runtime.fragment, null, $runtime.element("button", {
       source: this,
       onclick: this.hydrate,
       onkeyup: this.hydrate,
-      onkeydown: this.hydrate
+      onkeydown: this.hydrate,
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 107,
+        columnNumber: 11
+      }
     }, "Click here!"), $runtime.element("input", {
       bind: {
         object: this,
@@ -99,12 +201,37 @@ class Application extends Nullstack {
       },
       source: this,
       onkeyup: this.hydrate,
-      onkeydown: this.hydrate
-    }), $runtime.element($runtime.fragment, null, $runtime.element("h1", null, "count: ", this.count)), $runtime.element("a", {
-      href: "/home"
+      onkeydown: this.hydrate,
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 112,
+        columnNumber: 11
+      }
+    }), $runtime.element($runtime.fragment, null, $runtime.element("h1", {
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 118,
+        columnNumber: 13
+      }
+    }, "count: ", this.count)), $runtime.element("a", {
+      href: "/home",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 120,
+        columnNumber: 11
+      }
     }, "Home!"), $runtime.element(Home, {
       route: "/home",
-      greeting: "hello world!"
+      greeting: "hello world!",
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 121,
+        columnNumber: 11
+      }
     })));
   }
 }
