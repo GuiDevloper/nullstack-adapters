@@ -10,6 +10,7 @@ import { readFileSync } from 'fs'
 import Home from './Home'
 
 declare const Head: Application['renderHead']
+declare const { Head2 }: { Head2: Application['renderHead2'] }
 
 class Application extends Nullstack {
 
@@ -71,6 +72,10 @@ class Application extends Nullstack {
     )
   }
 
+  renderHead2() {
+    return false
+  }
+
   renderNestedInnerComponent() {
     return <div data-nested />
   }
@@ -98,6 +103,7 @@ class Application extends Nullstack {
     return (
       <body>
         <Head />
+        <Head2 />
         <InnerComponent reference={this.renderInnerReference}>
           children
         </InnerComponent>

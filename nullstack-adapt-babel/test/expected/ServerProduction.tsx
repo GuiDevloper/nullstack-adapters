@@ -55,6 +55,9 @@ class Application extends Nullstack {
       rel: "stylesheet"
     }));
   }
+  renderHead2() {
+    return false;
+  }
   renderNestedInnerComponent() {
     return $runtime.element("div", {
       "data-nested": true
@@ -88,8 +91,9 @@ class Application extends Nullstack {
   render() {
     const Repeated = this.renderRepeated;
     const InnerComponent = this.renderInnerComponent;
+    const Head2 = this.renderHead2;
     const Head = this.renderHead;
-    return $runtime.element("body", null, $runtime.element(Head, null), $runtime.element(InnerComponent, {
+    return $runtime.element("body", null, $runtime.element(Head, null), $runtime.element(Head2, null), $runtime.element(InnerComponent, {
       reference: this.renderInnerReference
     }, "children"), $runtime.element(Repeated, {
       number: 1

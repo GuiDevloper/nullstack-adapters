@@ -1,5 +1,5 @@
 import { ParseResult } from '@babel/parser'
-import traverse, { type NodePath } from '@babel/traverse'
+import traverse, { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 
 export = function (ast: ParseResult<t.File>): void {
@@ -15,9 +15,9 @@ export = function (ast: ParseResult<t.File>): void {
         if (!isComponent) return
 
         const hasBinding = path.scope.hasBinding(nodeName)
-        const bindingIsType =
-          !!path.scope.getBindingIdentifier(nodeName)?.typeAnnotation
-        const isInnerComponent = !hasBinding || bindingIsType
+        const bindingIsTypeDeclaration =
+          !!path.scope.getBinding(nodeName)?.path.parent['declare']
+        const isInnerComponent = !hasBinding || bindingIsTypeDeclaration
         if (isInnerComponent) {
           innerComponents.push(pathAndSubpath)
           const declaration = t.variableDeclaration('const', [

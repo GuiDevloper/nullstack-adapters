@@ -52,7 +52,7 @@ class Application extends Nullstack {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 64,
+        lineNumber: 65,
         columnNumber: 7
       }
     }, $runtime.element("link", {
@@ -61,7 +61,7 @@ class Application extends Nullstack {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 65,
+        lineNumber: 66,
         columnNumber: 9
       }
     }), $runtime.element("link", {
@@ -70,10 +70,13 @@ class Application extends Nullstack {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 66,
+        lineNumber: 67,
         columnNumber: 9
       }
     }));
+  }
+  renderHead2() {
+    return false;
   }
   renderNestedInnerComponent() {
     return $runtime.element("div", {
@@ -81,7 +84,7 @@ class Application extends Nullstack {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 75,
+        lineNumber: 80,
         columnNumber: 12
       }
     });
@@ -94,7 +97,7 @@ class Application extends Nullstack {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 79,
+        lineNumber: 84,
         columnNumber: 12
       }
     });
@@ -109,21 +112,21 @@ class Application extends Nullstack {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 84,
+        lineNumber: 89,
         columnNumber: 7
       }
     }, $runtime.element("p", {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 85,
+        lineNumber: 90,
         columnNumber: 9
       }
     }, " Inner Component "), $runtime.element(NestedInnerComponent, {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 86,
+        lineNumber: 91,
         columnNumber: 9
       }
     }), $runtime.element(Reference, {
@@ -131,7 +134,7 @@ class Application extends Nullstack {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 87,
+        lineNumber: 92,
         columnNumber: 9
       }
     }), children);
@@ -144,7 +147,7 @@ class Application extends Nullstack {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 94,
+        lineNumber: 99,
         columnNumber: 12
       }
     });
@@ -152,19 +155,27 @@ class Application extends Nullstack {
   render() {
     const Repeated = this.renderRepeated;
     const InnerComponent = this.renderInnerComponent;
+    const Head2 = this.renderHead2;
     const Head = this.renderHead;
     return $runtime.element("body", {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 99,
+        lineNumber: 104,
         columnNumber: 7
       }
     }, $runtime.element(Head, {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 100,
+        lineNumber: 105,
+        columnNumber: 9
+      }
+    }), $runtime.element(Head2, {
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 106,
         columnNumber: 9
       }
     }), $runtime.element(InnerComponent, {
@@ -172,7 +183,7 @@ class Application extends Nullstack {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 101,
+        lineNumber: 107,
         columnNumber: 9
       }
     }, "children"), $runtime.element(Repeated, {
@@ -180,7 +191,7 @@ class Application extends Nullstack {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 104,
+        lineNumber: 110,
         columnNumber: 9
       }
     }), $runtime.element(Repeated, {
@@ -188,7 +199,7 @@ class Application extends Nullstack {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 105,
+        lineNumber: 111,
         columnNumber: 9
       }
     }), $runtime.element($runtime.fragment, null, $runtime.element("button", {
@@ -199,7 +210,7 @@ class Application extends Nullstack {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 107,
+        lineNumber: 113,
         columnNumber: 11
       }
     }, "Click here!"), $runtime.element("input", {
@@ -213,14 +224,14 @@ class Application extends Nullstack {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 112,
+        lineNumber: 118,
         columnNumber: 11
       }
     }), $runtime.element($runtime.fragment, null, $runtime.element("h1", {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 118,
+        lineNumber: 124,
         columnNumber: 13
       }
     }, "count: ", this.count)), $runtime.element("a", {
@@ -228,7 +239,7 @@ class Application extends Nullstack {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 120,
+        lineNumber: 126,
         columnNumber: 11
       }
     }, "Home!"), $runtime.element(Home, {
@@ -237,7 +248,7 @@ class Application extends Nullstack {
       __self: this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 121,
+        lineNumber: 127,
         columnNumber: 11
       }
     })));
