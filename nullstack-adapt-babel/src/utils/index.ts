@@ -1,14 +1,21 @@
+import dotenv from 'dotenv'
+dotenv.config({ path: atCWD('.env') })
+
 import path from 'path'
 import { Loader } from '../loaders'
 
-function atCWD(fullPath: string): string {
+export function atCWD(fullPath: string): string {
   return path.join(process.cwd(), fullPath)
 }
 
-function disabledAdapter(): boolean {
-  const { DEFAULT_CONFIG } =
-    require(atCWD('package.json'))?.stackblitz?.env || {}
-  return DEFAULT_CONFIG || process.env.DEFAULT_CONFIG
+export function disabledAdapter(): boolean {
+  const keyName = 'NULLSTACK_DEFAULT_CONFIG'
+  const config = { [keyName]: null }
+  config[keyName] =
+    process.env[keyName] ||
+    require(atCWD('package.json'))?.['nullstack-adapt-babel']?.[keyName]
+
+  return config[keyName]?.toString() === 'true'
 }
 
 export function removeRule(rules: Loader[], rule: Partial<Loader>) {
@@ -31,5 +38,3 @@ export function getRules(
 }
 
 export * from './getOptions'
-
-export { atCWD, disabledAdapter }

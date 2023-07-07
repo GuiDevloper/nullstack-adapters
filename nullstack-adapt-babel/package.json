@@ -1,6 +1,6 @@
 {
   "name": "nullstack-adapt-babel",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Adapt Nullstack to Babel",
   "author": "GuiDevloper",
   "license": "MIT",
@@ -32,6 +32,7 @@
     "@babel/types": "7.22.5",
     "babel-loader": "9.1.2",
     "css-minimizer-webpack-plugin": "^4.2.2",
+    "dotenv": "16.0.3",
     "esbuild": "^0.17.19",
     "terser-webpack-plugin": "5.3.6"
   },
