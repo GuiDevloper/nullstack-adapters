@@ -42,6 +42,8 @@ class Application extends Nullstack {
         console.log('at initiate!')
       },
     }
+    A.testServer()
+    Application.testServer({})
   }
 
   async prepare({ page }) {
@@ -64,6 +66,10 @@ class Application extends Nullstack {
         />
       </head>
     )
+  }
+
+  renderHead2() {
+    return false
   }
 
   renderNestedInnerComponent() {
@@ -93,6 +99,7 @@ class Application extends Nullstack {
     return (
       <body>
         <Head />
+        <Head2 />
         <InnerComponent reference={this.renderInnerReference}>
           children
         </InnerComponent>

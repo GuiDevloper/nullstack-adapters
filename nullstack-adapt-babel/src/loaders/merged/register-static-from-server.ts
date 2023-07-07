@@ -5,6 +5,7 @@ import * as t from '@babel/types'
 import {
   createRuntimeAccept,
   createStaticClassProperty,
+  getInitiateDeps,
   getKlassHash,
   type KlassAcceptable
 } from './merged-utils'
@@ -18,17 +19,25 @@ export = function (this: LoaderModule, ast: ParseResult<t.File>): string {
       imports.push(path.node.source.extra.rawValue.toString())
     },
     ClassDeclaration(path) {
-      const methodNames: string[] = []
+      const serverFunctions: string[] = []
       const klassName = path.node.id.name
       const klassIndex = klasses.push({ name: klassName, hashes: {} }) - 1
+      let initiateNode: t.ClassMethod
       path.node.body.body.forEach(node => {
         if (node.type !== 'ClassMethod') return
-        if (node.static && node.async && !node.key['name'].startsWith('_')) {
-          methodNames.push(node.key['name'])
-          klasses[klassIndex].hashes[node.key['name']] = newHash(
-            node.key['name']
-          )
+        const methodName = node.key['name']
+        if (node.static && node.async && !methodName.startsWith('_')) {
+          serverFunctions.push(methodName)
+          klasses[klassIndex].hashes[methodName] = newHash(methodName)
         }
+        if (methodName === 'initiate') {
+          initiateNode = node
+        }
+      })
+      klasses[klassIndex].initiateDeps = getInitiateDeps({
+        initiateNode,
+        serverFunctions,
+        path
       })
       const klassHash = getKlassHash(id, klassName)
       path.node.body.body.unshift(
@@ -36,7 +45,7 @@ export = function (this: LoaderModule, ast: ParseResult<t.File>): string {
       )
       path.insertAfter(
         t.identifier(
-          `${methodNames
+          `${serverFunctions
             .map(fn => `$runtime.register(${klassName}, "${fn}");`)
             .join('\n')}$runtime.register(${klassName});`
         )

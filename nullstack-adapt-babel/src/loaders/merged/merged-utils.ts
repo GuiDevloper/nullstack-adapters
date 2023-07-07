@@ -1,5 +1,6 @@
 import path from 'path'
 import * as t from '@babel/types'
+import traverse, { type NodePath } from '@babel/traverse'
 
 export function getKlassHash(id: string, klassName: string): string {
   return id
@@ -49,10 +50,41 @@ export function createRuntimeAccept({
       [${klasses.map(
         klass => `{
           klass: ${klass.name},
-          initiate: [],
+          initiate: ${JSON.stringify(klass.initiateDeps)},
           hashes: ${JSON.stringify(klass.hashes)}
         }`
       )}]
     );
   }`
+}
+
+type GetInitiateDepsParams = {
+  initiateNode: t.ClassMethod
+  serverFunctions: string[]
+  path: NodePath<t.ClassDeclaration>
+}
+
+export function getInitiateDeps(args: GetInitiateDepsParams) {
+  const initiateDeps: string[] = []
+  if (args.initiateNode) {
+    let passedItself = false
+    traverse(
+      args.initiateNode,
+      {
+        Identifier(identifierPath) {
+          const identifierName = identifierPath.node.name
+          if (identifierName === 'initiate' && !passedItself) {
+            passedItself = true
+            return
+          }
+          if (args.serverFunctions.includes(identifierName)) {
+            initiateDeps.push(identifierName)
+          }
+        }
+      },
+      args.path.scope,
+      args.path
+    )
+  }
+  return initiateDeps
 }

@@ -35,6 +35,8 @@ class Application extends Nullstack {
         console.log('at initiate!');
       }
     };
+    A.testServer();
+    Application.testServer({});
   }
   async prepare({
     page
@@ -126,7 +128,7 @@ export default Application;
 if (module.hot) {
   $runtime.accept(module, '/ServerProduction.tsx', ["./Application.css", "nullstack", "fs", "./Home"], [{
     klass: Application,
-    initiate: [],
+    initiate: ["testServer", "testServer", "testServer"],
     hashes: {
       "testServer": "e27b59d6d8e0867694186e8eb79289d2"
     }

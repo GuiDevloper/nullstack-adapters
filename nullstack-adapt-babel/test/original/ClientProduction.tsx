@@ -48,6 +48,8 @@ class Application extends Nullstack {
         console.log('at initiate!')
       },
     }
+    A.testServer()
+    Application.testServer({})
   }
 
   async prepare({ page }: NullstackClientContext) {

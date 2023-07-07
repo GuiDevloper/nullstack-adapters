@@ -25,6 +25,8 @@ class Application extends Nullstack {
         console.log('at initiate!');
       }
     };
+    A.testServer();
+    Application.testServer({});
   }
   async prepare(_ref) {
     let {
@@ -45,6 +47,9 @@ class Application extends Nullstack {
       href: "https://fonts.googleapis.com/css2?family=Crete+Round&family=Roboto&display=swap",
       rel: "stylesheet"
     }));
+  }
+  renderHead2() {
+    return false;
   }
   renderNestedInnerComponent() {
     return $runtime.element("div", {
@@ -82,8 +87,9 @@ class Application extends Nullstack {
   render() {
     const Repeated = this.renderRepeated;
     const InnerComponent = this.renderInnerComponent;
+    const Head2 = this.renderHead2;
     const Head = this.renderHead;
-    return $runtime.element("body", null, $runtime.element(Head, null), $runtime.element(InnerComponent, {
+    return $runtime.element("body", null, $runtime.element(Head, null), $runtime.element(Head2, null), $runtime.element(InnerComponent, {
       reference: this.renderInnerReference
     }, "children"), $runtime.element(Repeated, {
       number: 1
@@ -118,7 +124,7 @@ export default Application;
 if (module.hot) {
   $runtime.accept(module, '/ClientProduction.jsx', ["./Application.css", "nullstack", "fs", "./Home"], [{
     klass: Application,
-    initiate: [],
+    initiate: ["testServer", "testServer", "testServer"],
     hashes: {
       "testServer": "e27b59d6d8e0867694186e8eb79289d2"
     }

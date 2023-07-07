@@ -6,7 +6,8 @@ import {
   getKlassHash,
   createStaticClassProperty,
   createRuntimeAccept,
-  type KlassAcceptable
+  type KlassAcceptable,
+  getInitiateDeps
 } from './merged-utils'
 import removeImportFromClient from './remove-import-from-client'
 
@@ -14,7 +15,6 @@ export = function (this: LoaderModule, ast: ParseResult<t.File>): string {
   const id = this.resourcePath.replace(this.rootContext, '')
   let imports: string[] = []
   let klasses: KlassAcceptable[] = []
-  let initiateDeps: string[] = []
   traverse(ast, {
     ImportDeclaration(path) {
       imports.push(path.node.source.extra.rawValue.toString())
@@ -26,20 +26,14 @@ export = function (this: LoaderModule, ast: ParseResult<t.File>): string {
       const invokations: t.ClassProperty[] = [
         createStaticClassProperty('hash', `'${klassHash}'`)
       ]
+      const serverFunctions: string[] = []
+      let initiateNode: t.ClassMethod
       path.node.body.body = path.node.body.body.map(node => {
         if (node.type !== 'ClassMethod') return node
         const methodName = node.key['name']
-        if (methodName === 'initiate') {
-          // TODO: get initiate deps on Server Functions
-          // removing local functions/variables with same name
-          /*
-          const variables = path.node.body.body.filter(node => {
-            return node.type === 'VariableDeclaration'
-          })
-          */
-        }
         if (node.static && node.async) {
           if (!methodName.startsWith('_')) {
+            serverFunctions.push(methodName)
             klasses[klassIndex].hashes[methodName] = newHash(methodName)
             invokations.push(
               createStaticClassProperty(
@@ -50,7 +44,15 @@ export = function (this: LoaderModule, ast: ParseResult<t.File>): string {
           }
           return t.classProperty(t.identifier(''))
         }
+        if (methodName === 'initiate') {
+          initiateNode = node
+        }
         return node
+      })
+      klasses[klassIndex].initiateDeps = getInitiateDeps({
+        initiateNode,
+        serverFunctions,
+        path
       })
       path.get('body').unshiftContainer('body', invokations)
     }
