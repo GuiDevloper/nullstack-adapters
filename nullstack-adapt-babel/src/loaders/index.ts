@@ -6,7 +6,7 @@ import { type BabelLoaderOptions, getBabelLoaders } from './babel-loaders'
 function runtime(options: Options) {
   return {
     // TODO: think about module components and create better rule
-    exclude: /node_modules/,
+    exclude: /node_modules.*client\.(js|ts)$/,
     test: /(\.(nts|tsx|njs|jsx)|client\.(js|ts))$/,
     loader: path.posix.join(options.configFolder, 'loaders/inject-runtime.js')
   }
