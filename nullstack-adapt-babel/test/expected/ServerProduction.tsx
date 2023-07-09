@@ -126,7 +126,7 @@ $runtime.register(Application, "testServer");
 $runtime.register(Application);
 export default Application;
 if (module.hot) {
-  $runtime.accept(module, '/ServerProduction.tsx', ["./Application.css", "nullstack", "fs", "./Home"], [{
+  $runtime.accept(module, '/ServerProduction.tsx', ["./Application.css", "nullstack", "nullstack", "fs", "./Home"], [{
     klass: Application,
     initiate: ["testServer", "testServer", "testServer"],
     hashes: {

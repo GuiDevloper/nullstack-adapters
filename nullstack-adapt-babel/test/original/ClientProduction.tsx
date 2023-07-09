@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 import './Application.css'
-import Nullstack, {
-  NullstackClientContext,
-  NullstackServerContext
-} from 'nullstack'
+import Nullstack, { NullstackServerContext } from 'nullstack'
+import {
+  NullstackClientContext
+} from "nullstack"
 
 import { readFileSync } from 'fs'
 

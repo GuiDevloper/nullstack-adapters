@@ -116,7 +116,7 @@ class Application extends Nullstack {
 }
 export default Application;
 if (module.hot) {
-  $runtime.accept(module, '/ClientProduction.tsx', ["./Application.css", "nullstack", "fs", "./Home"], [{
+  $runtime.accept(module, '/ClientProduction.tsx', ["./Application.css", "nullstack", "nullstack", "fs", "./Home"], [{
     klass: Application,
     initiate: ["testServer", "testServer", "testServer"],
     hashes: {

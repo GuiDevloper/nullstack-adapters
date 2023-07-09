@@ -16,9 +16,9 @@ export = function (ast: ParseResult<t.File>): void {
   const imports: Record<string, { key: string; parent: NodePath<t.Node> }> = {}
 
   function findImports(path: ImportNodePath) {
-    if (path.node.local.name === 'Nullstack') return
-
     const parent = path.findParent(p => p.isImportDeclaration())
+    if ((parent.node['source'] as t.StringLiteral).value === 'nullstack') return
+
     const { start, end } = parent.node.loc
     const lines = new Array(end.line - start.line + 1)
       .fill(null)

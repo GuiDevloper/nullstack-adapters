@@ -250,7 +250,7 @@ class Application extends Nullstack {
 }
 export default Application;
 if (module.hot) {
-  $runtime.accept(module, '/ClientDevelopment.tsx', ["./Application.css", "nullstack", "fs", "./Home"], [{
+  $runtime.accept(module, '/ClientDevelopment.tsx', ["./Application.css", "nullstack", "nullstack", "fs", "./Home"], [{
     klass: Application,
     initiate: ["testServer", "testServer", "testServer"],
     hashes: {
