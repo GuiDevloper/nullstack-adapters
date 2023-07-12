@@ -110,3 +110,10 @@ Someone may ask _"Nullstack having a fast SWC compiler, why would one go back to
 > Not just fast, the beauty of that even got me seduced to learn some [Rust](https://rust-lang.org/) and contribute at our [own SWC plugin](https://github.com/nullstack/swc-plugin-nullstack) ⚡
 
 Then yeah, there's some reasoning on bringing back the Babel days, aside from giving that plugins/presets freedom to the user and liking experiments, we wanted to use a platform like [StackBlitz](https://stackblitz.com/) that currently doesn't support SWC binaries
+
+Then this package makes possible projects like those:
+
+## Example projects
+
+- [Nullstack New](https://github.com/GuiDevloper/nullstack-new): Run a Nullstack template with one link ✨🚀
+- [Nullstack Examples](https://github.com/GuiDevloper/nullstack-examples): Some examples in Nullstack framework easily previewed on [StackBlitz](https://stackblitz.com/)
