@@ -1,0 +1,57 @@
+{
+  "name": "nullstack-adapt-babel",
+  "version": "0.0.20",
+  "description": "Adapt Nullstack to Babel",
+  "author": "GuiDevloper",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "bin": {
+    "nullstack-adapt-babel": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "start": "npm run esbuild",
+    "build": "npm run clean && npm run esbuild prod && tsc --emitDeclarationOnly",
+    "esbuild": "node esbuild.config.js",
+    "clean": "rimraf ./dist",
+    "prepublishOnly": "npm run build",
+    "test": "npm run esbuild test"
+  },
+  "dependencies": {
+    "@babel/core": "7.22.5",
+    "@babel/generator": "7.22.5",
+    "@babel/parser": "7.22.5",
+    "@babel/plugin-proposal-class-properties": "7.18.6",
+    "@babel/plugin-proposal-export-default-from": "7.22.5",
+    "@babel/plugin-transform-typescript": "7.22.5",
+    "@babel/preset-env": "7.22.5",
+    "@babel/preset-react": "7.22.5",
+    "@babel/traverse": "7.22.5",
+    "@babel/types": "7.22.5",
+    "babel-loader": "9.1.2",
+    "css-minimizer-webpack-plugin": "^4.2.2",
+    "dotenv": "16.0.3",
+    "esbuild": "^0.17.19",
+    "terser-webpack-plugin": "5.3.6"
+  },
+  "devDependencies": {
+    "@types/babel__generator": "^7.6.4",
+    "@types/babel__traverse": "^7.20.1",
+    "@types/node": "^20.3.0",
+    "nullstack": "0.19.2",
+    "rimraf": "5.0.1",
+    "tiny-glob": "^0.2.9",
+    "typescript": "^5.1.3",
+    "vitest": "^0.32.2"
+  },
+  "keywords": [
+    "nullstack",
+    "babel"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GuiDevloper/nullstack-adapters/tree/main/nullstack-adapt-babel"
+  }
+}

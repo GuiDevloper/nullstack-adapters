@@ -14,6 +14,8 @@ pnpm-lock.yaml
 # misc
 .DS_Store
 *.pem
+dist
+*/test/test-deps.ts
 
 # debug
 npm-debug.log*

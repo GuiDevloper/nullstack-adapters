@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "lib": ["ESNext"],
+    "types": ["node", "babel__traverse"],
+    "esModuleInterop": true,
+    "declaration": true,
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "allowJs": true,
+    "noImplicitThis": true
+  },
+  "include": ["src"]
+}
