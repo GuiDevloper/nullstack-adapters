@@ -1,6 +1,8 @@
 import path from 'path'
 import * as t from '@babel/types'
 import traverse, { type NodePath } from '@babel/traverse'
+import type { ParserPlugin } from '@babel/parser'
+import type { UserSettings } from '../index'
 
 export function getKlassHash(id: string, klassName: string): string {
   return id
@@ -87,4 +89,18 @@ export function getInitiateDeps(args: GetInitiateDepsParams) {
     )
   }
   return initiateDeps
+}
+
+const babelParserProposals: Record<string, ParserPlugin> = {
+  '@babel/plugin-proposal-do-expressions': 'doExpressions',
+  '@babel/plugin-proposal-throw-expressions': 'throwExpressions'
+}
+
+export function getUserParserPlugins(
+  userSettings: UserSettings
+): ParserPlugin[] {
+  let userPlugins = userSettings?.babel?.plugins || []
+  return userPlugins
+    .map(plugin => babelParserProposals[plugin.toString()])
+    .filter(Boolean)
 }

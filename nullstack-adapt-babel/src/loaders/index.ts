@@ -16,11 +16,11 @@ function getLoader(loader: string) {
   return path.join(__dirname, loader)
 }
 
-function mergedLoaders(options: Options) {
+function mergedLoaders(options: Options, userSettings: UserSettings) {
   return {
     test: /\.(njs|nts|jsx|tsx)$/,
     loader: getLoader('merged/index.js'),
-    options
+    options: { ...options, userSettings }
   }
 }
 
@@ -114,7 +114,7 @@ function newConfig(options: Options, userSettings?: UserSettings): Loader[] {
     replaceEnvironment(options),
     replaceProject(options),
     injectHmrClient(options),
-    mergedLoaders(options)
+    mergedLoaders(options, userSettings)
   ].filter(rule => !!rule.test)
 }
 

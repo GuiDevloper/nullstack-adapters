@@ -2,6 +2,8 @@ import { parse } from '@babel/parser'
 import generate from '@babel/generator'
 import type { LoaderModule } from '../loaders-utils'
 import type { Options } from '../../utils'
+import type { UserSettings } from '../index'
+import { getUserParserPlugins } from './merged-utils'
 
 import transformNodeRef from './transform-node-ref'
 import addSourceToNode from './add-source-to-node'
@@ -10,10 +12,11 @@ import registerStaticFromServer from './register-static-from-server'
 import removeStaticFromClient from './remove-static-from-client'
 
 export = function (this: LoaderModule, source: string): string {
-  const options = this.getOptions() as Options
+  const options = this.getOptions() as Options & { userSettings: UserSettings }
+  const userPlugins = getUserParserPlugins(options.userSettings)
   const ast = parse(source, {
     sourceType: 'module',
-    plugins: ['classProperties', 'jsx', 'typescript']
+    plugins: ['classProperties', 'jsx', 'typescript', ...userPlugins]
   })
   transformNodeRef(ast, source)
   addSourceToNode(ast)
