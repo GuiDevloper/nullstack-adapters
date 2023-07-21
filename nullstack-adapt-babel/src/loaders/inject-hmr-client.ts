@@ -18,7 +18,7 @@ export = function (source: string): string {
         klassName = path.parent['arguments'][0].name
         traverse(ast, {
           ImportDeclaration(importPath) {
-            if (importPath.node.specifiers[0].local.name === klassName) {
+            if (importPath.node.specifiers[0]?.local.name === klassName) {
               klassPath = importPath.node.source.extra.rawValue as string
               importPath.stop()
             }
