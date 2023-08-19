@@ -1,6 +1,6 @@
 # nullstack-adapt-babel
 
-Fully replace [Nullstack](https://nullstack.app/) compiler (currently [SWC](https://swc.rs/) + [swc-plugin-nullstack](https://github.com/nullstack/swc-plugin-nullstack)) with [Babel](https://babeljs.io/) and it's (g)old plugins/presets system
+Fully replace [Nullstack](https://nullstack.app/) compiler (currently [SWC](https://swc.rs/) + [swc-plugin-nullstack](https://github.com/nullstack/swc-plugin-nullstack)) with [Babel](https://babeljs.io/) and it's (g)old [plugins](https://babeljs.io/docs/plugins)/[presets](https://babeljs.io/docs/presets) system
 
 ## How to use
 
@@ -102,6 +102,8 @@ module.exports = useBabel(configs, {
 > Currently custom plugins/presets are only appended to the original
 
 > Currently it have no option to customize our `@babel/parser` (e.g. with `throwExpressions` plugin)
+
+> Currently our `@babel/parser` only supports `doExpressions` and `throwExpressions` plugins, as written [here](https://github.com/GuiDevloper/nullstack-adapters/blob/main/nullstack-adapt-babel/src/loaders/merged/merged-utils.ts#L94), contribute with this file if you wish to add more options!
 
 ## Purpose
 
