@@ -20,7 +20,7 @@ if (process.env.VERCEL) {
     JSON.stringify(
       {
         handler: 'index.js',
-        runtime: 'nodejs20.x',
+        runtime: 'nodejs22.x',
         launcherType: 'Nodejs',
         shouldAddHelpers: true,
         shouldAddSourcemapSupport: true,
